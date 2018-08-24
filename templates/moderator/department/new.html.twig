@@ -1,0 +1,13 @@
+{% extends 'moderator/base.html.twig' %}
+
+{% block title %}New Department{% endblock %}
+
+{% block body %}
+    <h1>Create new Department</h1>
+
+    {{ include('/moderator/department/_form.html.twig') }}
+
+    <a href="{{ path('moderator_department_list') }}">back to list</a><br>
+
+	<a href="{{ path('moderator_home') }}"><i class="fas fa-home"></i></a>
+{% endblock %}

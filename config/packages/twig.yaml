@@ -1,0 +1,12 @@
+twig:
+    paths: 
+        - '%kernel.project_dir%/templates'
+        - '%kernel.project_dir%/vendor/hwi/oauth-bundle/Resources/views' 
+
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    form_themes:
+        - 'bootstrap_4_layout.html.twig'
+    date:
+        timezone: Europe/Paris
+    exception_controller: App\Controller\ExceptionController::showException

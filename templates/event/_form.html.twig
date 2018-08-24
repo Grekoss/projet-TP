@@ -1,0 +1,50 @@
+<div>
+    {{ form_start(form) }}
+
+        <div>{{ form_row(form.name) }}</div>
+        <div>{{ form_row(form.description) }}</div>
+
+        <div>
+            <div>{{ form_row(form.address) }}</div>
+            <div class="d-flex bd-highlight">
+                <div class="flex-shrink-1">{{ form_row(form.zipcode) }}</div>
+                <div class="w-100 mx-md-2 bd-highlight">{{ form_row(form.city) }}</div>
+                <div class="flex-shrink-2 w-50">{{ form_row(form.department) }}</div>
+            </div>
+        </div>
+        
+        <div>
+            <div>{{ form_row(form.dateAt) }}</div>
+            <div>{{ form_widget(form.timeAt) }}</div>
+            <div>{{ form_row(form.timeInterval)}}</div>
+        </div>
+
+        <div>
+            <div id="form-event-photo-look" class="d-none d-md-block mx-auto mb-2"></div>
+            <div class="d-md-flex bd-highlight">
+                <div class="w-100 mr-md-2 bd-highlight">{{ form_row(form.photo) }}</div>
+                <div class="flex-md-shrink-4">{{ form_row(form.price) }}</div>
+            </div>
+        </div>
+
+        <div class="d-flex flex-wrap mx-1 text-left justify-content-center border rounded mb-2">{{ form_row(form.tags) }}</div>
+        
+        <div class="border rounded">
+            <div class="h4 alert alert-warning mx-auto mb-2 text-center" role="alert">Filtres de visibilité</div>
+            
+            <div class="d-block d-md-flex flex-wrap justify-content-center">
+                <div>{{ form_row(form.participantsLimit) }}</div>
+                <div class="ml-md-2">{{ form_row(form.visibility) }}</div>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-center">
+                <div class="mx-2">{{ form_row(form.minAge) }}</div>
+                <div class="mx-2">{{ form_row(form.maxAge) }}</div>
+            </div>
+            <div class="text-center font-italic">Les critères d'âge ne fonctionnent que si "Tout le monde" est sélectionné</div>
+        </div>
+
+
+        <button class="btn btn-success mt-3 w-100">{{ button_label|default('Enregistrer') }}</button>
+    {{ form_end(form) }}
+</div>

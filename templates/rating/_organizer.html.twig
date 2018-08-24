@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Notation des participants</h1>
+
+<a href="{{ path('event_show',{'slug': slug} )}}">Retour page précédente</a>
+<div class="alert alert-warning">
+    <ul>
+        <li> Une fois que vous aurez cliqué sur Envoyer, vous ne pourrez plus voter. </li>
+        {# <li> La note de comportement d'un personne notée absente n'est pas prise en compte ! 
+        </li> #}
+    </ul>
+
+</div> 
+
+<form action="{{path('organizer_rating', {'slug': slug})}}" method="POST" id="orgForm">
+{% for participant in participants %}
+<div>
+    <input type="text" value = {{participant.username}} readonly>
+    <label for="presence">Veuillez indiquer si le membre était présent</label>
+    <select name="presence{{loop.index0}}" class="presence">
+        <option value= 5>Présent</option>  
+        <option value= 4 selected>Absent mais excusé </option>         
+        <option value= 1>Absent non excusé </option>     
+    </select>
+    {% if participant != app.user  %}
+    
+    <div class= "behavior" >
+    <label for="comportement{{loop.index0}}"> Veuillez noter le comportement du membre de 1 à 5</label>
+    <input type="number" name="comportement{{loop.index0}}" id="comportement{{loop.index0}}" min=1 max= 5>
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+
+
+<button type="submit">Envoyer</button>
+</form>
+<script>
+
+
+</script>
+
+{% endblock %}

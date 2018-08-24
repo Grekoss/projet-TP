@@ -1,0 +1,105 @@
+{% extends 'moderator/base.html.twig' %}
+
+{% block title %}User{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/css/moderator/style_index.css') }}">
+{% endblock %}
+{% block body %}
+    <h1>User</h1>
+	{% for label, messages in app.flashes %}
+		{% for message in messages %}
+			<div class="alert alert-{{ label }}">
+				{{ message }}
+			</div>
+		{% endfor %}
+	{% endfor %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr class="{{ user.isActive ? 'membre' : 'bannis'}}">
+                <th>Username</th>
+                <td>{{ user.username }}</td>
+            </tr>
+            <tr>
+                <th>Lastname</th>
+                <td>{{ user.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Firstname</th>
+                <td>{{ user.firstname }}</td>
+            </tr>
+            <tr class="col-visibility-portable">
+                <th>Avatar</th>
+                <td>{{ user.avatar }}</td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td>{{ user.city }}</td>
+            </tr>
+            <tr>
+                <th>BirthDate</th>
+                <td>{{ user.birthDate ? user.birthDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>{{ user.address }}</td>
+            </tr>
+            <tr>
+                <th>Zipcode</th>
+                <td>{{ user.zipcode }}</td>
+            </tr>
+            <tr>
+                <th>Rating</th>
+                <td>{{ user.rating }}</td>
+            </tr>
+            <tr>
+                <th>IsActive</th>
+                <td>{{ user.isActive ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+			<tr>
+				<th>Status</th>
+				<td>
+					{{ include('moderator/user/_banish_form.html.twig') }}
+				</td>
+			</tr>
+			<tr>
+				<th>Events reports</th>
+				<td>
+					{% for eventReport in eventReports %}
+						{{ eventReport.description }}<br><hr>
+					{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<th>Personnal reports</th>
+				<td>
+					{% for userReport in userReports %}
+						{{ userReport.description }}<br><hr>
+					{% endfor %}
+				</td>
+			</tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('moderator_user_list') }}">back to list</a>
+
+    <a href="{{ path('user_edit', {'slug': user.slug}) }}">edit</a>
+
+    {{ include('user/_delete_form.html.twig') }}
+
+{% endblock %}

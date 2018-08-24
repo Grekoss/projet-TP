@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block body %}
+<div class="h2 alert alert-info mx-auto mb-2 text-center" role="alert">Mes notifications</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Contenu</th>
+
+        </tr>
+    </thead>
+    <tbody>
+    {% for notification in notifications %}
+        <tr>
+            <td>{{ notification.title }}</td>
+            <td>{{ notification.body|raw }}</td>
+            <td>
+                <a class="btn btn-info" href="{{ path('notification_show', {'id': notification.id}) }}">voir</a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="5">Pas d'enregistrement trouvé</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

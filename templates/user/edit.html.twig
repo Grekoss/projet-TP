@@ -1,0 +1,167 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/registration.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-message alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    {{form_start(form) }}
+
+    <h1>Modification de profil</h1>
+
+    <div class="container">
+        <fieldset class="row1">
+            <legend>Détail du compte</legend>
+            <div>
+                {{ form_row(form.username) }}
+                {{form_row(form.email)}}
+            </div>
+            <div class="container-password">
+                {{ form_row(form.password) }}
+            </div>
+            {# <label id="obinfo">* champs obligatoires</label> #}
+        </fieldset>
+
+        <fieldset class="row2">
+            <legend>Détails personnels</legend>
+            <div>
+                {{form_row(form.lastname)}}
+            </div>
+            <div>
+                {{form_row(form.firstname)}}
+            </div>
+            <div>
+                {{form_row(form.address)}}
+            </div>
+            <div>
+                {{form_row(form.zipcode)}}
+            </div>
+            <div>
+                {{form_row(form.city)}}
+            </div>
+            <div>
+                {{form_row(form.department)}}
+            </div>
+        </fieldset>
+
+        <fieldset class="row3">
+            <legend>Informations supplémentaires</legend>
+            <div class="radio-genre">
+                {{form_row(form.genre)}}
+            </div>
+            <div class="birthDate">
+                {{form_row(form.birthDate)}}
+            </div>
+        </fieldset>
+
+        <fieldset class="row4">
+            <legend>Bonus</legend>
+            <div>
+                {{form_row(form.avatar)}}
+            </div>
+            <div id="avatar-look"></div>
+        </fieldset>
+
+        <fieldset class="row5">
+            <legend>Envoi</legend>
+            <div class="agreement d-none">
+                {{form_row(form.validConditions)}}
+            </div>
+            <div class="conditions">
+                <a href="TODO">Voir les conditionss</a>
+            </div>
+            <div class="agreement">
+                {{form_row(form.isMailing)}}
+            </div>
+        </fieldset>
+
+        <button class="button">Modifier &raquo;</button>
+    
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        function miniature(fileInput, prev) {
+
+            function creationImage(file, prev, i) {
+                if (prev.getElementsByTagName('img').length == i) {
+
+                    function creationBalise() {
+                        // Clean style (border et backgroundImage)
+                        prev.style.background = 'url()';
+                        prev.style.border = 'none';
+                        prev.style.boxShadow = 'none';
+
+                        var imgElement = document.createElement('img');
+                        // imgElement.style.maxWidth = '100%';
+                        imgElement.style.maxHeight = '100%';
+                        imgElement.src = this.result;
+                        prev.appendChild(imgElement);
+                    }
+                    var reader = new FileReader();
+                    reader.addEventListener('load', creationBalise);
+                    reader.readAsDataURL(file);
+                } else {
+                    var timer = setTimeout(function () {
+                        creationImage(file, prev, i);
+                    }, 250);
+                }
+            }
+
+            var allowedTypes = ['png', 'jpg', 'jpeg', 'gif'];
+            var nomFiles = [];
+            var files = fileInput.files;
+            var filesLen = files.length;
+            var imgType;
+
+            for (var i = 0; i < filesLen; i++) {
+                nomFiles.push(files[i].name);
+                imgType = files[i].name.split('.');
+                imgType = imgType[imgType.length - 1];
+                if (allowedTypes.indexOf(imgType) != -1) {
+                    creationImage(files[i], prev, i);
+                }
+            }
+        }
+
+        document.getElementById('user_avatar').addEventListener('change', function () {
+            var fileInput = document.getElementById('user_avatar');
+            var prev = document.getElementById('avatar-look');
+            miniature(fileInput, prev);
+        }, false);
+    </script>
+{% endblock %}
+
+
+
+
+
+
+{# {% extends 'base.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block body %}
+    <h1>Edit User</h1>
+
+    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('user_index') }}">back to list</a>
+
+    {{ include('user/_delete_form.html.twig') }}
+{% endblock %} #}

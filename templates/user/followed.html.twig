@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block titles %}Mes suivies{% endblock %}
+
+{% block body %}
+<div class="h2 alert alert-info mx-auto mb-2 text-center" role="alert">Mes suivies</div>
+
+{% for event in followedEvents %}
+    <div class="d-md-none px-0">
+        {% include 'partiels/_card_event_xs.html.twig' %}
+    </div>
+{% else %}
+    <div class="alert alert-warning text-center">Pas de données</div>
+{% endfor %}
+
+
+<div class="d-none d-md-flex flex-wrap">
+    {% for event in followedEvents %}
+        <div class="col-md-6 mt-3 col-xl-3">
+            {% include 'partiels/_card_event.html.twig' %}
+        </div>        
+    {% endfor %}
+</div>
+
+{% endblock %}

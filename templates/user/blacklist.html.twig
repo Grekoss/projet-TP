@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ma liste noire{% endblock %}
+
+{% block body %}
+<div class="h2 alert alert-info mx-auto mb-2 text-center" role="alert">Ma liste noire</div>
+
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ label }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
+
+<div class="d-flex justify-content-between">
+    <a href="javascript:history.back()">Retour à la page précédente</a>
+    <a href="{{path('user_blacklist', {'id': app.user.id})}}">Afficher ma liste d'ami</a>
+</div>
+
+{% include 'partiels/_table_user_list_relation.html.twig' %}
+
+{% endblock %}

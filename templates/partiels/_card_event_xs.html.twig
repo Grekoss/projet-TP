@@ -1,0 +1,57 @@
+
+    <div class="shadow-lg p-3 mb-5 bg-light rounded">
+        <h1 class="rounded bg-info p-2 text-center font-weight-bold">
+            <a class="text-white" href="{{ path('event_show', {'slug':event.slug})}}">{{ event.name }}</a>
+        </h1>
+        
+        <div class="d-flex flex-wrap justify-content-center">
+            {% for tag in event.tags %}
+                <a class="btn btn-sm mr-2 mt-2 mb-2" style="background-color:{{ tag.backgroundColor }};color:{{ tag.textColor }}" href="{{ path('search_eventsByTag', {'slug': tag.slug}) }}">{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+
+        <div class="mr-1 ml-1">
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <p>Organisé par <a href="{{path('user_show', {'slug': event.organize.slug})}}">{{ event.organize|capitalize }}</a></p>
+            {% else %}
+                <p>Organisé par {{ event.organize|capitalize }}</p>
+            {% endif %}
+            <p class="text-right mt-1 mb-1">Le {{ event.dateAt|localizeddate('medium', 'none') }} à {{ event.timeAt|localizeddate('none', 'short') }}</p>
+        </div>
+
+        <a class="d-block mb-1 mt-1 text-dark" href="{{ path('event_show', {'slug':event.slug}) }}">{{ event.description|truncate(75) }}</a>
+
+        <p class="bg-white text-center rounded mt-2" >Lieu : {{ event.zipcode }} - {{ event.city }}</p>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+   
+        
+
+{#     <div class="event-small-container-secondary">
+        
+     
+        <p>{{ event.description }}</p>
+    </div> #}
+
+</div>

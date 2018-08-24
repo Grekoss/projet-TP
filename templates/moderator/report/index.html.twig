@@ -1,0 +1,53 @@
+{% extends 'moderator/base.html.twig' %}
+
+{% block title %}report index{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/css/moderator/style_index.css') }}">
+{% endblock %}
+{% block body %}
+	<h1>Les Derniers Rapports</h1>
+	<table class="table">
+		<thead>
+			<tr><a href="{{ path('moderator_report_event') }}">EventReport</a></tr>
+			<tr>
+				<th>Membres</th>
+				<th>Événements</th>
+				<th class="col-visibility-portable">Description</th>
+				<th>Date</th>
+				<th>Supprimer ?</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for eventReport in eventReports %}
+				<tr>
+					<td><a href="{{ path('moderator_user_show', {'slug': eventReport.user.slug}) }}">{{ eventReport.user }}<br>{{ eventReport.user.lastname }}</a></td>
+					<td><a href="{{ path('moderator_event_show', {'slug': eventReport.event.slug}) }}">{{ eventReport.event }}</a></td>
+					<td class="col-visibility-portable">{{ eventReport.description }}</td>
+					<td>{{ eventReport.dateAt ? eventReport.dateAt|date('d-m-Y H:i:s') : '' }}</td>
+					<td>{{ include('moderator/report/_delete_event_report_form.html.twig') }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<table class="table">
+		<thead>
+			<tr><a href="{{ path('moderator_report_user') }}">UserReport</a></tr>
+			<tr>
+				<th>Membres Accusés</th>
+				<th>Informateurs</th>
+				<th class="col-visibility-portable">Description</th>
+				<th>Dates</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for userReport in userReports %}
+				<tr>
+					<td><a href="{{ path('moderator_user_show', {'slug': userReport.user.slug}) }}">{{ userReport.accusedUser }}{{ userReport.accusedUser.lastname }}</a></td>
+					<td><a href="{{ path('moderator_user_show', {'slug': userReport.user.slug}) }}">{{ userReport.user }}{{ userReport.user.lastname }}</a></td>
+					<td class="col-visibility-portable">{{ userReport.description }}</td>
+					<td>{{ userReport.dateAt ? userReport.dateAt|date('d-m-Y H:i:s') : '' }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

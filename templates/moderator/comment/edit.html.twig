@@ -1,0 +1,13 @@
+{% extends 'moderator/base.html.twig' %}
+
+{% block title %}Edit Comment{% endblock %}
+
+{% block body %}
+    <h1>Edit Comment</h1>
+
+    {{ include('moderator/comment/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('moderator_comment_list') }}">back to list</a>
+
+    {{ include('moderator/comment/_delete_form.html.twig') }}
+{% endblock %}

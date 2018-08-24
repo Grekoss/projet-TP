@@ -1,0 +1,12 @@
+{% extends 'moderator/base.html.twig' %}
+
+{% block title %}New Region{% endblock %}
+
+{% block body %}
+    <h1>Create new Region</h1>
+
+    {{ include('moderator/region/_form.html.twig') }}
+
+    <a href="{{ path('moderator_region_list') }}">back to list</a><br>
+	<a href="{{ path('moderator_home') }}"><i class="fas fa-home"></i></a>
+{% endblock %}

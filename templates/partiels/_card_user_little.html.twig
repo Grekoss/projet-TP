@@ -1,0 +1,13 @@
+<a class="card text-white shadow-lg mb-5" href="{{ path('user_show', {'slug': user.slug}) }}">
+    <div class="card-header bg-primary-1">
+        {% if user.avatar != NULL %}
+            <img class="w-100 rounded-circle" src="{{ asset('assets/images/users/' ~ user.avatar) }}" alt="Photo de l'user">
+        {% else %}
+            <img class="w-100 rounded-circle" src="{{ asset('assets/images/default_user.png') }}" alt="Photo par default du membre">
+        {% endif %} 
+    </div>
+    <div class="card-footer text-center font-weight-bold bg-{{ user.genre.name|lower }}">
+        <p>{{ user.username|capitalize }}</p>
+        <p>{{ user.firstname|capitalize }}</p>
+    </div>
+</a>

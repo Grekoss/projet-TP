@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+body {
+	font-family: 'Roboto', sans-serif;
+}
+
+main {
+	max-width: 100%;
+}
+
+h1 {
+	color: #004c8c;
+	font-size: 3em;
+}
+
+div.main-body.col-xl-10 {
+	width: 100%;
+}
+
+/*Bannis*/
+
+.bannis {
+	background-color: #64d8cb;
+}
+/*Responsive*/
+
+@media(max-width: 1959px) {
+	.col-visibility {
+		display: none;
+	}
+}
+
+@media(max-width: 360px) {
+	.col-visibility-portable {
+		display: none;
+	}
+}

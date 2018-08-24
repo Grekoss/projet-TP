@@ -1,0 +1,113 @@
+<nav class="navbar navbar-expand-xl navbar-dark bg-primary-1-dark">
+    <a class="navbar-brand nav-title" href="{{ path('homepage') }}">Prenons l'air</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse " id="navbarSupportedContent">
+
+        <form class="form-inline my-2 my-lg-0 flex-grow-1 bd-highlight" action="{{ path('search_bar') }}" method="GET">
+            <div class="input-group m-auto">
+                <input name="search-bar" type="text" class="form-control" id="nav-search-bar" placeholder="Rechercher une sortie..." aria-label="search" aria-describedby="basic-addon1">
+                <div class="input-group">
+                    <button class="input-group-text" id="btn-search" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <ul class="navbar-nav bd-highlight mt-3 mt-xl-0">
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+            {# Button : Event #}
+            <li class="nav-item dropdown mt-1 mt-xl-0">
+                <a class="dropdown-toggle btn btn-outline-light mr-2" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Les sorties</a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                    <a class="dropdown-item" href="{{ path('event_list') }}"><i class="fas fa-list-alt mr-3"></i>Liste des sorties</a>
+
+                    <div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item" href="{{ path('search_eventsByDepartment', {'int' : app.user.department.number}) }}"><i class="fas fa-search-plus mr-3"></i>Sorties de mon département</a>
+                    <a class="dropdown-item" href="{{ path('search_eventsByRegion', {'id' : app.user.department.region.id}) }}"><i class="fas fa-search-minus mr-3"></i>Sorties de ma région</a>
+                    <a class="dropdown-item" href="{{ path('search') }}"><i class="fab fa-searchengin mr-3"></i>Recherche approfondie</a>
+            
+                    <div class="dropdown-divider"></div>
+            
+                    <a class="dropdown-item" href="{{ path('event_new') }}"><i class="fas fa-plus-circle mr-3"></i>Proposer une sortie</a>
+
+                </div>
+            </li>
+
+            {# Button : Membre #}
+            <li class="nav-item dropdown mt-1 mt-xl-0">
+                <a class="dropdown-toggle btn btn-outline-light mr-2" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Les membres</a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                    <a class="dropdown-item" href="{{path('user_index')}}"><i class="fas fa-list-alt mr-3"></i>Liste des membres</a>
+
+                    <div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item" href="{{ path('search_usersByDepartment', {'int' : app.user.department.number}) }}"><i class="fas fa-search-plus mr-3"></i>Membres de mon département</a>
+                    <a class="dropdown-item" href="{{ path('search_usersByRegion', {'id' : app.user.department.region.id}) }}"><i class="fas fa-search-minus mr-3"></i>Membres de ma région</a>
+                    <a class="dropdown-item" href="{{ path('search') }}"><i class="fab fa-searchengin mr-3"></i>Recherche approfondie</a>
+                </div>
+            </li>
+
+            {# Profil User #}
+            <li class="nav-item dropdown mt-3 mt-xl-0">
+                <a class="dropdown-toggle btn btn-outline-light mr-2" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mon compte</a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {% if is_granted('ROLE_MODERATOR') %}
+                        <a class="dropdown-item" href="{{ path('moderator_home') }}"><i class="fas fa-cogs mr-3"></i>Acces Modérateur</a>
+                        <div class="dropdown-divider"></div>
+                    {% endif %}
+            
+                    <a class="dropdown-item" href="{{path('user_friends', {'id': app.user.id})}}"><i class="fas fa-user-friends mr-3"></i>Ma liste d'amis</a>
+                    <a class="dropdown-item" href="{{path('user_blacklist', {'id': app.user.id})}}"><i class="fas fa-ban mr-3"></i>Ma Blacklist</a>
+
+                    <div class="dropdown-divider"></div>
+            
+                    <a class="dropdown-item" href="{{path('user_show', {'slug': app.user.slug})}}"><i class="fas fa-user-edit mr-3"></i>Mon compte</a>            
+            
+                    <div class="dropdown-divider"></div>
+            
+                    <a class="dropdown-item" href="{{ path('logout') }}"><i class="fas fa-sign-out-alt mr-3"></i>Déconnexion</a>
+                </div>
+            </li>
+
+            {# Notifications #}
+            {% set sumNotifications = app.user.followings|length + app.user.notifications|length %}
+            <li class="nav-item dropdown mt-1 mt-xl-0">
+                <a class="dropdown-toggle btn btn-outline-light mr-2" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mes notifications<span class="badge badge-danger mx-2">{{sumNotifications}}</span></a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                    <a class="dropdown-item" href="{{ path('user_notifications', {'id': app.user.id}) }}"><i class="fas fa-info-circle mr-3"></i>Mes notifications<span class="badge badge-danger ml-2">{{app.user.notifications|length}}</span></a>
+                    <a class="dropdown-item" href="{{ path('user_followed', {'id': app.user.id}) }}"><i class="fas fa-info-circle mr-3"></i>Mes sorties suivies<span class="badge badge-danger ml-2">{{app.user.followings|length}}</span></a>
+            </li>
+
+            <li class="d-none d-xl-block"> 
+                {% if app.user.avatar != NULL %}
+                    <img class="nav-avatar" src="{{ asset('assets/images/users/' ~ app.user.avatar) }}" alt="Photo du membre">
+                {% else %}
+                    <img class="nav-avatar" src="{{ asset('assets/images/default_user.png') }}" alt="Photo de membre mis par défault">
+                {% endif %}
+            </li>
+
+        {% else %}
+        
+            <li class="nav-item navbar-item-top">
+                <a class="btn btn-outline-light mr-2" href="{{ path('event_list') }}">Liste des sorties</a>
+            </li>
+            <li class="nav-item navbar-item-top mt-3 mt-xl-0">
+                <a class="btn btn-outline-light mr-2" href="{{ path('user_new') }}"><i class="fas fa-user-plus mr-2"></i>Inscription</a>
+            </li>
+            <li class="nav-item navbar-item-top mt-1 mt-xl-0">
+                <a class="btn btn-outline-light" href="{{ path('login') }}"><i class="fas fa-sign-in-alt mr-2"></i>Connexion</a>
+            </li>
+        {% endif %}
+        </ul>
+    </div>
+</nav>
+

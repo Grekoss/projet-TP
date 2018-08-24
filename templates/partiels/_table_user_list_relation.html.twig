@@ -1,0 +1,42 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th class="d-none d-md-table-cell">Avatar</th>
+            <th>Username</th>
+            <th class="d-none d-md-table-cell">Prénom</th>
+            <th class="d-none d-md-table-cell">Age</th>
+            <th class="d-none d-md-table-cell">Rating</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for user in users %}
+            <tr>
+                <td class="d-none d-md-table-cell">
+                    {% if user.userConcerned.avatar != NULL %}
+                        <img style="width: 50px" src="{{ asset('assets/images/users/' ~ user.userConcerned.avatar) }}" alt="Photo du membre">
+                    {% else %}
+                        <img style="width: 50px" src="{{ asset('assets/images/default_user.png') }}" alt="Photo de membre mis par défault">
+                    {% endif %}
+                </td>
+                <td>{{ user.userConcerned.username }}</td>
+                <td class="d-none d-md-table-cell">{{ user.userConcerned.firstname }}</td>
+                <td class="d-none d-md-table-cell">{{ user.userConcerned.getAge() }} ans</td>
+                <td class="d-none d-md-table-cell d-xl-none"> {{ user.userConcerned.rating }} / 5</td>
+                <td class="d-none d-xl-table-cell"> {{ makeStar(user.userConcerned.rating)|raw }} </td>
+                <td>
+                    <a class="btn btn-info" href="{{ path('user_show', {'slug': user.userConcerned.slug}) }}">Info</a>
+                    <a class="btn btn-warning js-remove-friend" href="{{ path('remove_friend', {'id': user.userConcerned.id}) }}">Retirer de vos contacts</a>
+                    {% if relation == 'friend' %}
+                        <a class="btn btn-dark" href="{{ path('blacklist_add', {'id':user.userConcerned.id}) }}">Ajouter à la Blacklist</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="16">Pas de données</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

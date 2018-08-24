@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('moderator_user_delete', {'slug': user.slug}) }}" onsubmit="return confirm('Ètes-vous sûr de vouloir supprimer cette utilisateur');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.slug) }}">
+    <button class="btn">Delete</button>
+</form>

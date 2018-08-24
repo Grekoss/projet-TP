@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification{% endblock %}
+
+{% block body %}
+    <div class="h2 alert alert-info mx-auto mb-2 text-center" role="alert">Modification de votre sortie</div>
+
+    {{ include('event/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+    <div class="d-flex justify-content-between">
+        <a class="btn btn-link" href="javascript:history.back()">Retour à la page de l'évènement</a>
+        {{ include('event/_delete_form.html.twig') }}
+    </div>
+
+{% endblock %}

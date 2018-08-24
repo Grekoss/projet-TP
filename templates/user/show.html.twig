@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil de {{ user.username|capitalize }}{% endblock %}
+
+{% block body %}
+
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ label }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
+
+<div class="h2 alert alert-info mx-auto mb-2 text-center" role="alert">{{ user.firstname|capitalize }} alias {{ user.username|capitalize }}</div>
+
+<div class="d-flex flex-wrap mt-1">
+    <div class="text-left width-50-xl-25 alert alert-primary" role="alert">
+        <div>{{ user.getAge() }} ans</div>
+        <div>de {{ user.city|capitalize }}</div>
+    </div>
+    <div class="d-none d-xl-block text-center w-50">
+        {% if app.user == user %}
+            <a class="btn btn-success" href="{{ path('user_edit', {'slug': user.slug}) }}">Modifier mon profil</a>
+        {% endif %}
+    </div>
+    <div class="text-right width-50-xl-25 alert alert-primary" role="alert">
+        <div><a href="{{ path('search_usersByDepartment', {'int': user.department.number}) }}">{{ user.department.name|capitalize }}</a></div>
+        <div><a href="{{ path('search_usersByRegion', {'id': user.department.region.id}) }}">{{ user.department.region|capitalize }}</a></div>
+    </div>
+</div>
+
+<div class="d-xl-none text-center w-50 mx-auto">
+    {% if app.user == user %}
+        <a class="btn btn-success" href="{{ path('user_edit', {'slug': user.slug}) }}">Modifier mon profil</a>
+    {% endif %}
+</div>
+
+<div>
+    {% if isFriend %}
+        <div class="text-center alert alert-success bg-friend" role="alert">{{ user.username|capitalize }} est dans votre liste de contacts</div>
+    {% endif %}
+    {% if isBlacklisted %}
+        <div class="text-center alert alert-danger bg-blacklist" role="alert">{{ user.username|capitalize }} est dans votre liste noire</div>
+    {% endif %}
+</div>
+
+<div class="d-md-flex flex-wrap mt-2 border rouded p-2 justify-content-around">
+    <div class="border rouded h-100 w-25">
+        <div class="d-none d-md-block">
+            {% if user.avatar != NULL %}
+                <img class="w-100" src="{{ asset('assets/images/users/' ~ user.avatar) }}" alt="Photo du membre">
+            {% else %}
+                <img class="w-100" src="{{ asset('assets/images/default_user.png') }}" alt="Photo de membre mis par défault">
+            {% endif %}
+        </div>
+        <div>
+            <div class="text-center">{{ makeStar(user.rating)|raw }}</div>
+            <div class="text-center">({{user.evalCount}} évaluation{% if user.evalCount >= 2 %}s{% endif %})</div>
+        </div>
+    </div>
+    
+    <div class="card width-100-md-25 h-100">
+        <div class="card-header text-center">Liste des sorties</div>
+        <div>
+            {% for event in participationList %}
+                <div class="my-2"><a class="w-100 text-center" href="{{ path('event_show', {'slug':event.slug})}}"><i class="fas fa-caret-right mr-2"></i>{{ event.name }}</a></div>
+            {% else %}
+                <div class="w-100 text-center">Liste vide</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="card width-100-md-25 h-100">
+        <div class="card-header text-center">Liste des sorties organisées</div>
+        <div>
+            {% for event in organizerList %}
+                <div class="my-2"><a class="w-100 text-center" href="{{ path('event_show', {'slug':event.slug})}}"><i class="fas fa-caret-right mr-2"></i>{{ event.name }}</a></div>
+            {% else %}
+                <div class="w-100 text-center">Liste vide</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="width-100-md-25 card h-100">
+        <div class="card-header text-center font-weight-bold">Zone d'actions</div>
+        <div class="bg-primary-1">
+            {% if app.user == user %}
+                <div><a class="btn btn-success w-100 my-1" href="{{ path('user_friends', {'id': user.id}) }}">Mes contacts</a></div>
+                <div><a class="btn btn-dark w-100 my-1" href="{{ path('user_blacklist', {'id': user.id}) }}">Ma liste noire</a></div>
+                <div><a class="btn btn-warning w-100 my-1" href="{{ path('user_notifications', {'id': user.id}) }}">Mes notifications<span class="badge badge-danger mx-2 px-2"> {{ user.notifications|length }} </span></a></div>
+                <div><a class="btn btn-warning user-link w-100 mt-1" href="{{ path('user_followed', {'id': user.id}) }}">Sorties suivies<span class="badge badge-danger mx-2 px-2"> {{ user.followings|length }} </span></a></div>
+            {% else %}
+                {% if not isFriend and not isBlacklisted %}
+                    <div><a class="btn btn-success w-100 my-1" href="{{ path('add_friend', {'id':user.id}) }}"><i class="fas fa-user-friends mr-2"></i>Ajouter à vos contacts</a></div>
+                {% endif %}
+                {% if not isBlacklisted %}
+                    <div><a class="btn btn-warning w-100 my-1" href="{{ path('blacklist_add', {'id':user.id}) }}"><i class="fas fa-minus-circle mr-2"></i>Ajouter à votre liste noire</a></div>
+                {% else %}
+                    <div><a class="btn btn-warning w-100 my-1" href="{{ path('remove_friend', {'id':user.id}) }}" class="js-remove-friend">Retirer de votre liste noire</a></div>
+                {% endif %}
+            {% endif %}        
+        </div>
+    </div>
+</div>
+
+{% endblock %}

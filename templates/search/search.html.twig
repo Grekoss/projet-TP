@@ -1,0 +1,241 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche...{% endblock %}
+
+{% block body %}
+
+<div class="h2 alert alert-info mx-auto mb-2" role="alert">Recherche ...</div>
+
+<div class="text-center">
+    {{form_start(form) }}
+
+    <div class="d-inline-flex justify-content-center border border-danger rounded text-left mb-3">
+        <div class="bg-light h1 px-3 mb-0">1</div>
+        <div class="mx-2 mb-0">{{form_row(form.selectRequete)}}</div>
+    </div>
+
+    <div id="searchEvents" class="card mt-1 w-100">
+        <div class="card-header bg-light d-inline-flex justify-content-center mb-1">
+            <div class="h1 px-3 m-0 pt-0 pb-0">2</div>
+            <div class="h1 px-3 m-0 pt-0 pb-0">Sorties</div>
+        </div>
+
+        <div class="d-inline-flex flex-wrap justify-content-center">
+            <div class="h3 mx-2">Du</div>
+            <div>{{form_row(form.dateStart)}}</div>
+            <div class="h3 mx-2">au</div>
+            <div>{{form_row(form.dateEnd)}}</div>
+        </div>
+
+        <div>
+            <div class="ml-1 text-left">{{form_row(form.isRatingOrganizer)}}</div>
+            <div id="ratingSelectorOrganizer" class="w-75 mx-auto">{{form_row(form.ratingSelectorOrganizer)}}</div>
+        </div>
+        
+        <div>
+            <div class="ml-1 text-left">{{form_row(form.isFriend)}}</div>
+        </div>
+    </div>
+
+    <div id="searchMembers" class="card mt-1 w-100">
+        <div class="card-header bg-light d-inline-flex justify-content-center mb-1">
+            <div class="h1 px-3 m-0 pt-0 pb-0">2</div>
+            <div class="h1 px-3 m-0 pt-0 pb-0">Membres</div>
+        </div>
+
+        <div>
+            <div class="ml-1 text-left">{{form_row(form.isNew)}}</div>
+        </div>
+
+        <div>
+            <div class="ml-1 text-left">{{form_row(form.isRatingMember)}}</div>
+            <div id="ratingSelectorMember" class="w-75 mx-auto">{{form_row(form.ratingSelectorMember)}}</div>             
+        </div>
+
+        <div>
+            <div class="ml-1 text-left">{{form_row(form.isAge)}}</div>
+            <div id="ageSelectorMember" class="flex-wrap justify-content-center">
+                <div class="h5 mx-2">De</div>
+                <div>{{form_row(form.ageStart)}}</div>
+                <div class="h5 mx-2">à</div>
+                <div>{{form_row(form.ageEnd)}}</div>
+            </div>
+        </div>
+
+        <div>
+            <div class="ml-1 text-left">{{form_row(form.isGenre)}}</div>
+            <div id="genreSelectorMember" class="w-75 mx-auto">{{form_row(form.genre)}}</div>    
+        </div>
+    </div>
+
+    <div id="searchWhere" class="card mt-1 w-100">
+        <div class="card-header bg-light d-inline-flex justify-content-center mb-1">
+            <div class="h1 px-3 m-0 pt-0 pb-0">3</div>
+            <div class="h1 px-3 m-0 pt-0 pb-0">Lieux</div>
+        </div>
+
+        <div>
+            <div class="ml-1 text-left">{{form_row(form.choiceLocation)}}</div>
+            <div id="searchDepartment" class="m-1">{{form_row(form.selectDepartment)}}</div>
+            <div id="searchRegion" class="m-1">{{form_row(form.selectRegion)}}</div>
+        </div>
+    </div>
+
+    <div id="searchTags" class="card mt-1 w-100">
+        <div class="card-header bg-light d-inline-flex justify-content-center mb-1">
+            <div class="h1 px-3 m-0 pt-0 pb-0">4</div>
+            <div class="h1 px-3 m-0 pt-0 pb-0">Tags</div>
+        </div>
+
+        <div>
+            <div>{{form_row(form.isAllTags)}}</div>
+            <div class="d-flex flex-wrap mx-1 text-left justify-content-center">
+            {{form_row(form.selectTags)}}</div>
+        </div>
+    </div>
+  
+
+    <button id="searchValid" type="submit" class="w-100 btn btn-success mt-3"><i class="fas fa-search"></i>Valider</button>
+
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+    //Block zone
+    var zoneEvent = document.getElementById('searchEvents');
+    var zoneMember = document.getElementById('searchMembers');
+    var zoneWhere = document.getElementById('searchWhere');
+    var zoneTags = document.getElementById('searchTags');
+    var searchValid = document.getElementById('searchValid');
+    var zoneDepartment = document.getElementById('searchDepartment');
+    var zoneRegion = document.getElementById('searchRegion');
+    zoneEvent.style.display = 'none';
+    zoneMember.style.display = 'none';
+    zoneWhere.style.display = 'none';
+    zoneTags.style.display = 'none';
+    searchValid.style.display = 'none';
+    zoneDepartment.style.display = 'none';
+    zoneRegion.style.display = 'none';
+
+    //Rating Organizer
+    var ratingOrganizer = document.getElementById('search_isRatingOrganizer');
+    var ratingSelectorOrganizer = document.getElementById('ratingSelectorOrganizer');
+    ratingSelectorOrganizer.style.display = 'none';
+
+    //Rating Member
+    var ratingMember = document.getElementById('search_isRatingMember');
+    var ratingSelectorMember = document.getElementById('ratingSelectorMember');
+    ratingSelectorMember.style.display = 'none';
+
+    //Age Member
+    var ageMember = document.getElementById('search_isAge');
+    var ageSelectorMember = document.getElementById('ageSelectorMember');
+    ageSelectorMember.style.display = 'none';
+
+    //Genre Member
+    var genreMember = document.getElementById('search_isGenre');
+    var genreSelectorMember = document.getElementById('genreSelectorMember');
+    genreSelectorMember.style.display = 'none';
+
+    var allTags = document.getElementById('search_isAllTags');
+
+    function searchCheck() {  
+        if (ratingOrganizer.checked) {
+            ratingSelectorOrganizer.style.display = 'block';
+        } else {
+            ratingSelectorOrganizer.style.display = 'none';
+        }
+
+        if (ratingMember.checked) {
+            ratingSelectorMember.style.display = 'block';
+        } else {
+            ratingSelectorMember.style.display = 'none';
+        }
+
+        if (ageMember.checked) {
+            ageSelectorMember.style.display = 'inline-flex';
+        } else {
+            ageSelectorMember.style.display = 'none';
+        }
+
+        if (genreMember.checked) {
+            genreSelectorMember.style.display = 'block';
+        } else {
+            genreSelectorMember.style.display = 'none';
+        }
+    }
+
+    $('#search_isAllTags').click(function() {
+        var tags = $('#search_selectTags').find(':checkbox');
+        if(this.checked) {
+            tags.prop('checked', true);
+            allTags.checked = false;
+        } 
+    });
+
+    $('#search_selectRequete_0').click(function() {
+        if(this.checked) {
+            zoneEvent.style.display = 'inline-flex';
+            zoneWhere.style.display = 'inline-flex';
+            zoneTags.style.display = 'inline-flex';
+            searchValid.style.display = 'block';
+            zoneMember.style.display = 'none';
+        } 
+    });
+
+    $('#search_selectRequete_1').click(function () {
+        if (this.checked) {
+            zoneMember.style.display = 'inline-flex';
+            zoneWhere.style.display = 'inline-flex';
+            searchValid.style.display = 'block';
+            zoneTags.style.display = 'none';
+            zoneEvent.style.display = 'none';
+        }
+    });
+
+    $('#search_choiceLocation_0').click(function() {
+        if(this.checked) {
+            zoneDepartment.style.display = 'none';
+            zoneRegion.style.display = 'none';
+        }
+    });
+
+    $('#search_choiceLocation_1').click(function () {
+        if (this.checked) {
+            zoneDepartment.style.display = 'none';
+            zoneRegion.style.display = 'none';
+        }
+    });
+
+    $('#search_choiceLocation_2').click(function () {
+        if (this.checked) {
+            zoneDepartment.style.display = 'none';
+            zoneRegion.style.display = 'none';
+        }
+    });
+
+    $('#search_choiceLocation_3').click(function () {
+        if (this.checked) {
+            zoneDepartment.style.display = 'block';
+            zoneRegion.style.display = 'none';
+        }
+    });
+
+    $('#search_choiceLocation_4').click(function () {
+        if (this.checked) {
+            zoneDepartment.style.display = 'none';
+            zoneRegion.style.display = 'block';
+        }
+    });
+
+
+
+</script>
+{% endblock %}
+
+    
+    
+

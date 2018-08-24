@@ -1,0 +1,32 @@
+{% extends 'moderator/base.html.twig' %}
+
+{% block title %}Événement rapporter{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/css/moderator/style_index.css') }}">
+{% endblock %}
+{% block body %}
+	<h1>Événement rapporter</h1>
+	<table class="table">
+	<thead>
+		<tr>
+			<th>Membre</th>
+			<th>Événement</th>
+			<th>Description</th>
+			<th>Date</th>
+			<th>Supprimer ?</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for eventReport in eventReports %}
+			<tr>
+				<td><a href="{{ path('moderator_user_show', {'slug': eventReport.user.slug}) }}">{{ eventReport.user }}<br>{{ eventReport.user.lastname }}</a></td>
+				<td>{{ eventReport.event }}</td>
+				<td>{{ eventReport.description }}</td>
+				<td>{{ eventReport.dateAt ? eventReport.dateAt|date('d-m-Y H:i:s') : '' }}</td>
+				<td>{{ include('moderator/report/_delete_event_report_form.html.twig') }}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+	</table>
+	<a href="{{ path('moderator_report_last') }}">Les derniers rapports</a><br>
+{% endblock %}

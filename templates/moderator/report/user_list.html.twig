@@ -1,0 +1,30 @@
+{% extends 'moderator/base.html.twig' %}
+
+{% block title %}reports users{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/css/moderator/style_index.css') }}">
+{% endblock %}
+{% block body %}
+	<h1>Users Reports</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>AccusedUser</th>
+				<th>Informer</th>
+				<th>Description</th>
+				<th>Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for userReport in userReports %}
+				<tr>
+					<td><a href="{{ path('moderator_user_show', {'slug': userReport.accusedUser.slug}) }}">{{ userReport.accusedUser }}{{ userReport.accusedUser.lastname }}</a></td>
+					<td>{{ userReport.user }}{{ userReport.user.lastname }}</td>
+					<td>{{ userReport.description }}</td>
+					<td>{{ userReport.dateAt ? userReport.dateAt|date('d-m-Y H:i:s') : '' }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<a href="{{ path('moderator_report_last') }}">Last Reports</a><br>
+{% endblock %}

@@ -1,0 +1,30 @@
+<div>
+    <ul class="d-flex flex-wrap mx-1 text-left justify-content-center"> 
+        {% for participant in participants [:event.participantsLimit] %}
+            <li>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a class="btn btn-link" href="{{ path ('user_show',{'slug': participant.slug})}}">{{participant.username|capitalize}}</a>
+                {% else %}
+                    <div class="btn btn-link">{{participant.username|capitalize}}</div>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</div> 
+
+{% if participants|length > event.participantsLimit %}
+    <div>
+        <div>En attente ({{participants|length - event.participantsLimit}}):</div>
+        <ul class="d-flex flex-wrap mx-1 text-left justify-content-center">
+            {% for participant in participants [event.participantsLimit:] %}
+                <li>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <a class="btn btn-link" href="{{ path ('user_show',{'slug': participant.slug})}}">{{participant.username|capitalize}}</a>
+                    {% else %}
+                        <div class="btn btn-link">{{participant.username|capitalize}}</div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

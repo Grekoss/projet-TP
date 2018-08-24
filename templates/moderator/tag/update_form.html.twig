@@ -1,0 +1,12 @@
+{% extends 'moderator/base.html.twig' %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/css/moderator/style_tag.css') }}">
+{% endblock %}
+
+{% block body %}
+	{{ form_start(form) }}
+		{{ form_widget(form) }}
+		<button class="btn">{{ button_label|default('Modifier') }}</button>
+	{{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des membres{% endblock %}
+
+{% block body %}
+
+<div class="h2 alert alert-info mx-auto mb-2 text-center" role="alert">Liste de toutes les membres</div>
+
+{% include 'partiels/_table_user_list.html.twig' %}
+
+{# Zone paging #}
+<div class="text-center mt-2">
+    <div class="navigation d-inline-block">
+        {{ knp_pagination_render(users) }}
+    </div>
+</div>
+
+{% endblock %}

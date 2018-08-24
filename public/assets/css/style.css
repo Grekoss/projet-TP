@@ -1,0 +1,108 @@
+/* COLOR THEME */
+.bg-primary-1 { background-color: #bbdefb }
+.bg-primary-1-light { background-color: #9BE7FF }
+.bg-primary-1-dark { background-color: #8aacc8 }
+.bg-friend { background-color: #00E445 }
+.bg-blacklist { background-color: indianred }
+.bg-homme { background-color: #4169E1 }
+.bg-femme { background-color: #E260A1 }
+
+/* SIZE */
+.width-50-xl-25 { width: 50% }
+.width-100-md-25 { width: 100% }
+/* GENERAL */
+#button-france {
+    cursor: pointer;
+    height: 50px;
+    box-shadow: 5px 5px 5px 5px #AAA;
+}
+/* ****** */
+/* NAVBAR */
+header{
+    z-index: 1;
+}
+
+.nav-title {
+    font-family: 'Wendy One', sans-serif;
+    font-size: 2em;
+}
+ul.navbar-nav li {
+    font-family: 'Wendy One', sans-serif;
+}
+.nav-avatar {
+    margin-left: 1em;
+    width: 40px;
+    height: 40px;
+    border: lightgrey solid 2px;
+    box-shadow: 3px 3px 5px #AAA;
+    border-radius: 100%;
+}
+/* ***** */
+/* MAIN */
+main {
+    font-family: 'Raleway', sans-serif;
+}
+
+/* ****** */
+/* SEARCH */
+#search_selectTags .form-check,
+#event_tags .form-check {
+    width: 50%;
+}
+
+/* ********* */
+/* NEW-EVENT */
+#event_timeAt {
+    flex-flow: initial;
+}
+#form-event-photo-look {
+    width: 200px;
+    height: 100px;
+    top: -107px;
+    right: 15px;
+    border: lightgrey solid 2px;
+    box-shadow: 3px 3px 5px #AAA;
+}
+
+/* Small devices (landscape phones, less than 768px) */
+@media (min-width: 767.98px) {
+    /* SIZE */
+    .width-100-md-25 { width: 25% }
+    
+    /* ******** */
+    /* HOMEPAGE */
+    .homepage-image {
+        max-width: 100%;
+        max-height: 300px;
+    }
+
+    /* ****** */
+    /* NAVBAR */
+    #nav-search-bar {
+        width: 350px;
+    }
+
+    /* ********** */
+    /* SHOW EVENT */
+    .card-participant {
+        width: 40%;
+    }
+}
+
+/* Large devices (desktops, less than 1200px) */
+@media (min-width: 1199.98px) {
+    /* SIZE */
+    .width-50-xl-25 { width: 25% }
+    /* ********* */
+    /* NEW-EVENT */
+    #form-event-photo-look {
+        width: 300px;
+        height: 200px;
+    }
+
+    /* ********** */
+    /* SHOW EVENT */
+    .card-participant {
+        width: 55%;
+    }
+}

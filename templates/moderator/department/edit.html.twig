@@ -1,0 +1,15 @@
+{% extends 'moderator/base.html.twig' %}
+
+{% block title %}Edit Department{% endblock %}
+
+{% block body %}
+    <h1>Edit Department</h1>
+
+    {{ include('moderator/department/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('moderator_department_list') }}">back to list</a>
+
+    {{ include('moderator/department/_delete_form.html.twig') }}
+
+	<a href="{{ path('moderator_home') }}"><i class="fas fa-home"></i></a>
+{% endblock %}

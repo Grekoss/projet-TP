@@ -1,0 +1,9 @@
+{% if (true == event.isActive) %}
+	<form method="post" action="{{ path('moderator_report_event_manage',{'slug' : event.slug}) }}" onsubmit="return confirm('Ètes-vous sûr de vouloir bannir cet événement?')">
+		<button class="btn"><i class="fas fa-lock-open"></i> Bannir</button>
+	</form>
+{% else %} <form method="post" action="{{ path('moderator_report_event_manage',{'slug' : event.slug}) }}" onsubmit="return confirm('Ètes-vous sûr d\'annuler le bannissement de cet événement?')">
+
+	<button class="btn"><i class="fas fa-lock"></i> Enlever le bannissement</button>
+</form>
+{% endif %}

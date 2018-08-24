@@ -1,0 +1,61 @@
+{% extends 'moderator/base.html.twig' %}
+
+{% block title %}Les événements{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/css/moderator/style_index.css') }}">
+{% endblock %}
+{% block body %}
+    <h1>Liste d'événements</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="col-visibility">Id</th>
+                <th>Titre</th>
+                <th>Organisé par</th>
+                <th class="col-visibility">Address</th>
+                <th class="col-visibility">Zipcode</th>
+                <th>Ville</th>
+                <th class="col-visibility-portable">Photo</th>
+                <th>Prix</th>
+                <th class="col-visibility">Bannis ?</th>
+                <th>a lieu le</th>
+                <th>Créé le</th>
+                <th>Modifié le</th>
+                <th class="col-visibility">Description</th>
+                <th class="col-visibility">Slug</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event in events %}
+            <tr>
+                <td class="col-visibility">{{ event.id }}</td>
+                <td>{{ event.name }}</td>
+                <td>{{ event.organize }}</td>
+                <td class="col-visibility">{{ event.address }}</td>
+                <td class="col-visibility">{{ event.zipcode }}</td>
+                <td>{{ event.city }}</td>
+                <td class="col-visibility-portable">{{ event.photo }}</td>
+                <td>{{ event.price }}</td>
+                <td class="col-visibility">{{ event.isActive ? 'Yes' : 'No' }}</td>
+                <td>{{ event.dateAt ? event.dateAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ event.createdAt ? event.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ event.updatedAt ? event.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td class="col-visibility">{{ event.description }}</td>
+                <td class="col-visibility">{{ event.slug }}</td>
+                <td>
+                    <a href="{{ path('moderator_event_show', {'slug': event.slug}) }}">Voir</a>
+                    <a href="{{ path('moderator_event_update', {'slug': event.slug}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="14">Aucun événement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('event_new') }}">Nouvel Événement</a><br>
+{% endblock %}

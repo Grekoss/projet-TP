@@ -1,0 +1,25 @@
+{% extends 'moderator/base.html.twig' %}
+
+{% block title %}Tag index{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/css/moderator/style_tag.css') }}">
+{% endblock %}
+
+{% block body %}
+	<h1>Tags</h1>
+	<div class="alltags">
+		{% for tag in tags %}
+			<div class="tag card">
+				<div class="card-body" style="background-color:{{ tag.backgroundColor }};color:{{ tag.textColor }}">
+					<h3>{{ tag.name }}</h3>
+					{{ include('moderator/tag/_delete_form.html.twig') }}
+					<a class="" href="{{ path('moderator_tag_update', {'id': tag.id}) }}"><i class="fas fa-edit"></i></a>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+	<div class="formtag">
+		{{ include('moderator/tag/_form.html.twig') }}
+	</div>
+{% endblock %}

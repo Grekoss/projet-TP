@@ -1,0 +1,72 @@
+{% extends 'moderator/base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/css/moderator/style_index.css') }}">
+{% endblock %}
+{% block body %}
+    <h1>Les membres</h1>
+	<ul class="nav nav-tabs">
+		<li class="nav-item">
+			<a class="nav-link active" href="{{ path('moderator_user_list') }}">Tous</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="{{ path('moderator_user_genre_list', {'genre': 'femme'}) }}">Femmes</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="{{ path('moderator_user_genre_list', {'genre': 'homme'}) }}">Hommes</a>
+		</li>
+	</ul>
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="col-visibility">Id</th>
+                <th>Username</th>
+                <th>Lastname</th>
+                <th>Firstname</th>
+                <th class="col-visibility-portable">Avatar</th>
+                <th class="col-visibility-portable">City</th>
+                <th class="col-visibility-portable">BirthDate</th>
+                <th class="col-visibility-portable">Address</th>
+                <th class="col-visibility-portable">Zipcode</th>
+                <th>Rating</th>
+                <th>IsActive</th>
+                <th class="col-visibility">CreatedAt</th>
+                <th class="col-visibility">UpdatedAt</th>
+                <th class="col-visibility-portable">Email</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr class="{{ user.isActive ? 'membre' : 'bannis'}}">
+                    <td class="col-visibility">{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.lastname }}</td>
+                    <td>{{ user.firstname }}</td>
+                    <td class="col-visibility-portable">{{ user.avatar }}</td>
+                    <td class="col-visibility-portable">{{ user.city }}</td>
+                    <td class="col-visibility-portable">{{ user.birthDate ? user.birthDate|date('Y-m-d H:i:s') : '' }}</td>
+                    <td class="col-visibility-portable">{{ user.address }}</td>
+                    <td class="col-visibility-portable">{{ user.zipcode }}</td>
+                    <td>{{ user.rating }}</td>
+                    <td>{{ user.isActive ? 'Yes' : 'No' }}</td>
+                    <td class="col-visibility">{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td class="col-visibility">{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td class="col-visibility-portable">{{ user.email }}</td>
+                    <td>
+                        <a href="{{ path('moderator_user_show', {'slug': user.slug}) }}">show</a>
+                        <a href="{{ path('moderator_user_update', {'slug': user.slug}) }}">update</a>
+						{{ include('moderator/user/_delete_form.html.twig') }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="16">no records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('user_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'moderator/base.html.twig' %}
+
+{% block title %}New Event{% endblock %}
+
+{% block body %}
+    <h1>Create new Event</h1>
+
+    {{ include('moderator/event/_form.html.twig') }}
+
+    <a href="{{ path('moderator_event_list') }}">back to list</a><br>
+	<a href="{{ path('moderator_home') }}"><i class="fas fa-home"></i></a>
+{% endblock %}

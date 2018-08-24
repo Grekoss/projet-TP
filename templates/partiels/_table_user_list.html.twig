@@ -1,0 +1,41 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>Avatar</th>
+            <th>Username</th>
+            <th class="d-none d-md-table-cell">Prénom</th>
+            <th class="d-none d-md-table-cell">Ville</th>
+            <th class="d-none d-md-table-cell">Age</th>
+            <th class="d-none d-md-table-cell">Rating</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for user in users %}
+            <tr class="{{ user.genre.name|lower }}">
+                <td>
+                    {% if user.avatar != NULL %}
+                        <img style="width: 50px" src="{{ asset('assets/images/users/' ~ user.avatar) }}" alt="Photo du membre">
+                    {% else %}
+                        <img style="width: 50px" src="{{ asset('assets/images/default_user.png') }}" alt="Photo de membre mis par défault">
+                    {% endif %}
+                </td>
+                <td>{{ user.username }}</td>
+                <td class="d-none d-md-table-cell">{{ user.firstname }}</td>
+                <td class="d-none d-md-table-cell">{{ user.city }}</td>
+                <td class="d-none d-md-table-cell">{{ user.getAge() }} ans</td>
+                <td class="d-none d-md-table-cell d-xl-none"> {{ user.rating }} / 5</td>
+                <td class="d-none d-xl-table-cell"> {{ makeStar(user.rating)|raw }} </td>
+                <td>
+                    <a class="btn btn-info" href="{{ path('user_show', {'slug': user.slug}) }}">Info</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="16">Pas de données</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+

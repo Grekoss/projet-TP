@@ -1,0 +1,50 @@
+<nav class="navbar navbar-expand-xl">
+    <a class="navbar-brand nav-title" href="{{ path('homepage') }}">Prenons l'air</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+	{#Nav Visibility < 1200 px #}
+	<nav class="visibility navbar navbar-expand-lg navbar-light bg-light">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			<div class="navbar-nav">
+				<a class="nav-item nav-link" href="{{ path('moderator_user_list') }}">Les Membres</a>
+				<a class="nav-item nav-link" href="{{ path('moderator_event_list') }}">les Événements</a>
+				<a class="nav-item nav-link" href="{{ path('moderator_tag_list') }}">Les Tags</a>
+				<a class="nav-item nav-link" href="{{ path('moderator_comment_list') }}">Les Commentaires</a>
+				<a class="nav-item nav-link" href="{{ path('moderator_report_last') }}">Les Rapports</a>
+				<a class="nav-item nav-link" href="{{ path('moderator_region_list') }}">Les Régions</a>
+			</div>
+		</div>
+	</nav>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <div class="nav-container">
+				<li class="nav-item navbar-item-top">
+					<a href="{{ path('moderator_home') }}"><i class="fas fa-home"></i></a>
+				</li>
+            </div>
+
+            <div class="nav-container">
+                <li class="nav-item">
+                    <a class="nav-link" href="#TODO"><i class="fas fa-search ico-left"></i>Sortir dans ma zone</a>
+                </li>
+
+                <form class="form-inline my-2 my-lg-0">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Rechercher" aria-label="search" aria-describedby="basic-addon1">
+                        <div class="input-group">
+                            <button class="input-group-text" id="btn-search" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </ul>
+    </div>
+</nav>

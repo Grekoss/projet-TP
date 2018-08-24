@@ -1,0 +1,46 @@
+<div class="card h-100 shadow-lg mb-5">
+    <div class="card-header bg-light">
+        <h1 class="rounded bg-info p-2 text-center font-weight-bold mx-2">
+            <a class="text-white" href="{{ path('event_show', {'slug':event.slug})}}">{{ event.name }}</a>
+        </h1>
+
+        <div class="m-2">
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <p>Organisé par
+                <a href="{{path('user_show', {'slug': event.organize.slug})}}">{{ event.organize|capitalize }}</a>
+            </p>
+            {% else %}
+            <p>Organisé par {{ event.organize|capitalize }}</p>
+            {% endif %}
+            <p class="text-right mt-1 mb-1">Le {{ event.dateAt|localizeddate('medium', 'none') }} à {{ event.timeAt|localizeddate('none', 'short') }}</p>
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-center">
+            {% for tag in event.tags %}
+            <a class="btn btn-sm mx-2 mb-1" style="background-color:{{ tag.backgroundColor }};color:{{ tag.textColor }}" href="{{ path('search_eventsByTag', {'slug': tag.slug}) }}">{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="text-center">
+        {% if event.photo != NULL %}
+            <img class="w-75 mh-75" src="{{ asset('assets/images/events/' ~ event.photo) }}" alt="Photo de l'évènement">
+        {% else %}
+            <img class="w-75 mh-75" src="{{ asset('assets/images/default_event.jpg') }}" alt="Photo de l'évènement mis par défault">
+        {% endif %}
+        </div>    
+
+        <a class="d-block mb-1 mt-1 text-dark text-justify px-2" href="{{ path('event_show', {'slug':event.slug}) }}">{{ event.description|truncate(200) }}</a>
+    </div>
+
+    {% set freePlaces = event.participantsLimit - event.participations|length %}
+    {% if freePlaces < 0 %}
+        {% set freePlaces = 0 %}
+    {% endif %}
+    
+    <div class="card-footer">
+        <p class="bg-light text-center rounded mx-2 p-2" >Lieu : {{ event.zipcode }} - {{ event.city }}</p>
+        <div class="rounded bg-info p-2 text-center font-weight-bold m-2 text-white">Nombre de places libres<em class="badge badge-light ml-1">{{ freePlaces }}</em></div>
+    </div>
+</div>

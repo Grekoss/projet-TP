@@ -1,0 +1,210 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ event.name|capitalize }}{% endblock %}
+
+{% block body %}
+
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ label }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
+
+<div class="h2 alert alert-info mx-auto mb-2 text-center" role="alert">{{ event.name|capitalize }}</div>
+
+<div class="d-flex flex-wrap mt-1">
+    <div class="text-center w-75">
+        {% for tag in event.tags %}
+            <a class="btn btn-sm mx-2 mb-1" style="background-color:{{ tag.backgroundColor }};color:{{ tag.textColor }}" href="{{ path('search_eventsByTag', {'slug': tag.slug}) }}">{{ tag.name }}</a>
+        {% endfor %}
+    </div>
+    <div class="text-right w-25">
+        <div><a href="{{ path('search_eventsByDepartment', {'int': event.department.number}) }}">{{ event.department.name|capitalize }}</a></div>
+        <div><a href="{{ path('search_eventsByRegion', {'id': event.department.region.id}) }}">{{ event.department.region|capitalize }}</a></div>
+    </div>
+</div>
+
+<div class="d-flex flex-wrap mt-2 border rounded p-2">
+    <div class="w-25">
+        {% if event.photo != NULL %}
+            <img class="w-100" src="{{ asset('assets/images/events/' ~ event.photo) }}" alt="Photo de l'évènement">
+        {% else %}
+            <img class="w-100" src="{{ asset('assets/images/default_event.jpg') }}" alt="Photo de l'évènement mis par défault">
+        {% endif %}
+    </div>
+    <div class="w-75">
+        <div class="ml-2 d-flex justify-content-between flex-column h-100">
+            <div class="alert alert-warning text-center" role="alert">Le {{ event.dateAt|localizeddate('long', 'none') }} à {{ event.timeAt|localizeddate('none', 'short') }}</div>
+            <p>{{ event.description }}</p>
+            <div class="d-md-flex justify-content-between">
+                <div>
+                    {% if event.price != NULL %}
+                        <div>Prix</div>
+                        <div>{{ event.price }} &euro;</div>
+                    {% else %}
+                        <div class="badge badge-success">Pas de prix annoncé</div>
+                    {% endif %}
+                </div>
+                <div class="alert alert-warning my-0" role="alert">
+                    <div class="text-center font-weight-bold mb-1">Limite d'age :</div>
+                    <div class="text-center">{{ event.minAge }} à {{ event.maxAge }}</div>
+                </div>
+                <div class="text-right">
+                    <div class="font-weight-bold">Adresse :</div>
+                    <div><em class="ml-2">{{ event.address }}</em><em class="ml-2">{{ event.zipcode }}</em><em class="ml-2">{{ event.city|capitalize }}</em></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-2 border rounded p-2">
+    <div id="map-event" style="height: 200px;"></div>
+</div>
+
+<div class="d-flex flex-wrap mt-2 border rounded p-2 bd-highligh justify-content-around">
+    <div class="border rounded bd-highlight h-100">
+        <div style="width: 200px;">
+            {% if event.organize.avatar != NULL %}
+                <img class="w-100" src="{{ asset('assets/images/users/' ~ event.organize.avatar) }}" alt="Photo de l'organisateur">
+            {% else %}
+                <img class="w-100" src="{{ asset('assets/images/default_user.png') }}" alt="Photo d'un user mis par défault">
+            {% endif %}
+        </div>
+        <div class="text-center">
+            <div class="font-weight-bold">Organisé par :</div>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <div><a href="{{ path('user_show', {'slug': event.organize.slug}) }}">{{ event.organize|capitalize }}</a></div>
+            {% else %}
+                <div>{{ event.organize|capitalize }}</div>
+            {% endif %}
+            <div class="font-weight-bold mt-3">Note :</div>
+            <div>{{ makeStar(event.organize.rating)|raw }}</div>
+        </div>
+    </div>
+
+    <div class="card bd-highlight mx-2 card-participant">
+        <div class="card-header">
+            <div class="font-weight-bold p-2 text-center">Liste des participants :</div>
+            <div class="text-center">
+                <em>
+                    {% if participants|length <= event.participantslimit %}
+                        {{ participants|length }}
+                    {% else %}
+                        {{ event.participantsLimit }}
+                    {% endif %}
+                </em>
+                <em>/</em>
+                <em>{{ event.participantsLimit }}</em>
+            </div>
+        </div>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <div>{{ include('event/_list_participants.html.twig') }}</div>
+        {% endif %}
+    </div>
+
+    <div class="card bd-highlight h-100">
+        <div class="card-header font-weight-bold p-2 text-center">Zone d'action :</div>
+        <div class="alert alert-warning" role="alert">
+            <div class="font-weight-bold mb-1">Date limite d'inscription :</div>
+            <div class="text-center">le <em>{{ event.joinTimeLimit|localizeddate('long', 'short') }}</em></div>
+        </div>
+        <div>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {% if not timedOut %}
+                    <div class="text-center">
+                        {% if not isFollowed %}
+                            <a class="btn btn-info" href="{{ path('following_create', {'slug': event.slug}) }}">Suivre cet évènement</a>
+                        {% else %}
+                            <a class="btn btn-info" href="{{ path('following_remove', {'slug': event.slug}) }}">Ne plus suivre</a>
+                        {% endif %}
+                    </div>
+                    {% if participants|length == 20 %}
+                        <div class="mx-auto alert alert-danger" role="alert">Cette sortie est complète</div>
+                    {% else %}
+                        {% if cantJoin %}
+                            <div class="text-center my-2">
+                                {% if app.user in participants %}
+                                    <a class="btn btn-warning show-event-button-registration" href="{{ path('event_unjoin', {'slug': event.slug}) }}" role="button">Se désinscrire</a>
+                                {% else %}
+                                    <a class="btn btn-success show-event-button-registration" href="{{ path('event_join', {'slug': event.slug}) }}">S'inscrire à l'évènement</a>
+                                {% endif %}  
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    <div class="alert alert-secondary mx-auto" role="alert">Cet évènement est passé !</div>
+                    {% if app.user == event.organize %}
+                        <div class="text-center"><a class="btn btn-secondary show-event-finish" href="{{ path('event_rating', {'slug': event.slug}) }}">Veuillez noter les participants</a></div>
+                    {% endif %}
+                {% endif %}
+            {% endif %}       
+        </div>
+        <div class="card-footer text-center">
+            {% if app.user == event.organize %}
+                <p>Cette sortie est suivie par {{ event.followings|length }} personne{{ (event.followings|length < 2) ? '' : 's' }}</p>
+                <div class="d-flex justify-content-around mt-2">
+                    <a class="btn btn-warning show-event-button" href="{{ path('event_update', {'slug': event.slug}) }}">Modifier</a>
+                    <div>{{ include('event/_delete_form.html.twig') }}</div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<a class="btn btn-dark w-100 my-3" href="{{ path('event_list') }}">Retour à la liste des évènements</a>
+
+<div class="border rounded p-2">
+    <div>{{ include('event/_comments.html.twig') }}</div>
+</div>
+
+{% endblock %}
+
+
+{% block javascript %}
+    <script>
+        var currentAddress = "{{ event.address }}";
+        var currentZipcode = "{{ event.zipcode }}";
+        var currentCity = "{{ event.city }}";
+
+        var geocoder;
+        var map;
+
+        var address = currentAddress + ', ' + currentZipcode + ', ' + currentCity + ', France';
+
+        function initialize() {
+            console.log(address);
+            var latlng = new google.maps.LatLng(48.862725, 2.287592);
+            var mapOptions = {
+                zoom: 12,
+                center: latlng
+            }
+            map = new google.maps.Map(document.getElementById('map-event'), mapOptions);
+            geocoder = new google.maps.Geocoder;
+            geocoder.geocode({
+                'address': address
+            }, function (results, status) {
+                if (status == 'OK') {
+                    map.setCenter(results[0].geometry.location);
+                    var marker = new google.maps.Marker({map: map, position: results[0].geometry.location});
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+
+        function showListParticipants() {
+            document.getElementById('show-event-list-participants').style.display = 'block';
+        }
+
+        function closeListParticipants() {
+            document.getElementById('show-event-list-participants').style.display = 'none';
+        }
+
+        function showListComments() {
+            document.getElementById('show-event-list-comments').style.display = 'block';
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrSk_4QCXBnfOJopo3tUY1MNpTT9nkWaU&callback=initialize" async="async" defer="defer"></script>
+{% endblock %}

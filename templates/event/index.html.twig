@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des sorties{% endblock %}
+
+{% block body %}
+
+<div class="h2 alert alert-info mx-auto mb-2 text-center" role="alert">Liste de toutes les sorties disponibles</div>
+
+    {% if is_granted('IS_FULLY_AUTHENTICATED') %}
+        <div class="h5 text-center">Listes des sorties où je suis invité </div>
+
+        {% for event in privateEvents %}
+            {% include 'partiels/_card_event_xs.html.twig' %}
+        {% else %}
+            Pas de sorties privées
+        {% endfor %}
+
+        <hr>
+
+        {% for event in events if event not in forbidden %}
+            <div class="d-md-none px-0">
+                {% include 'partiels/_card_event_xs.html.twig' %}
+            </div>
+        {% endfor %}
+    
+        <div class="d-none d-md-flex flex-wrap">
+            {% for event in events if event not in forbidden %}
+                <div class="col-md-6 mt-3 col-xl-3">
+                    {% include 'partiels/_card_event.html.twig' %}
+                </div>
+            {% endfor %}
+        </div>
+
+
+    {% else %}
+
+        {% for event in events %}
+            <div class="d-md-none px-0">
+                {% include 'partiels/_card_event_xs.html.twig' %}
+            </div>
+        {% endfor %}
+
+        <div class="d-none d-md-flex flex-wrap">
+            {% for event in events %}
+                <div class="col-md-6 mt-3 col-xl-3">
+                    {% include 'partiels/_card_event.html.twig' %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+
+{# Zone paging #}
+<div class="text-center mt-2">
+    <div class="navigation d-inline-block">
+        {{ knp_pagination_render(events) }}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+<div class="h4 rounded alert-info mx-auto mb-2 text-center">Commentaires</div>
+
+{% for comment in event.comments %}
+    <div class="border rounded my-2 d-flex bd-highlight">
+        <div class="flex-grow-1 bd-highlight p-3">
+            <p>{{comment.description}}</p>
+            <p class="mt-2 text-right"><em class="font-weight-bold">Par </em>{{comment.user.username }}<em class="font-weight-bold">, le </em>{{ comment.dateAt|localizeddate('medium', 'short') }}</p>
+        </div>
+        <div class="bd-highlight">
+            {% if app.user == comment.user %}
+                {% include 'comment/_delete_form.html.twig' %}
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}
+
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <div class="h5 mt-4">Votre commentaire :</div>
+    {% include 'comment/_form.html.twig' %}
+{% endif %}

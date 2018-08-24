@@ -1,0 +1,98 @@
+{% extends 'moderator/base.html.twig' %}
+
+{% block title %}Event{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/css/moderator/style_index.css') }}">
+{% endblock %}
+{% block body %}
+    <h1 class="{{ event.isActive ? 'membre' : 'bannis'}}">{{ event.name }}</h1>
+	{% for label, messages in app.flashes %}
+		{% for message in messages %}
+			<div class="alert alert-{{ label }}">
+				{{ message }}
+			</div>
+		{% endfor %}
+	{% endfor %}
+    <table class="table">
+        <tbody>
+            <tr class="col-visibility">
+                <th>Id</th>
+                <td>{{ event.id }}</td>
+            </tr>
+            <tr>
+                <th>Organisé par</th>
+                <td>{{ event.organize }}</td>
+            </tr>
+            <tr>
+            <tr>
+                <th>Address</th>
+                <td>{{ event.address }}</td>
+            </tr>
+            <tr>
+                <th>Zipcode</th>
+                <td>{{ event.zipcode }}</td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td>{{ event.city }}</td>
+            </tr>
+            <tr>
+                <th>Photo</th>
+                <td>{{ event.photo }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ event.price }}</td>
+            </tr>
+            <tr class="col-visibility">
+                <th>IsActive</th>
+                <td>{{ event.isActive ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>DateAt</th>
+                <td>{{ event.dateAt ? event.dateAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ event.createdAt ? event.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ event.updatedAt ? event.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr class="col-visibility-portable">
+                <th>Description</th>
+                <td>{{ event.description }}</td>
+            </tr>
+            <tr class="col-visibility">
+                <th>Slug</th>
+                <td>{{ event.slug }}</td>
+            </tr>
+            <tr class="col-visibility">
+                <th>limite de participants</th>
+                <td>{{ event.participantsLimit }}</td>
+            </tr>
+            <tr class="col-visibility">
+                <th>Participations</th>
+				<td>
+					{% for participant in participants  %}
+						{{ participant.participant }}<br>
+					{% endfor %}
+				</td>
+			<tr>
+				<th>Status</th>
+				<td>
+					{{ include('moderator/event/_banish_form.html.twig') }}
+				</td>
+			</tr>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <a href="{{ path('moderator_event_list') }}">back to list</a><br>
+
+    <a href="{{ path('moderator_event_update', {'slug': event.slug}) }}">edit</a>
+
+    {{ include('moderator/event/_delete_form.html.twig') }}
+{% endblock %}
