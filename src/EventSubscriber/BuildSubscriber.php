@@ -6,10 +6,12 @@ use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 class BuildSubscriber implements EventSubscriberInterface
 {
     private $display;
+
     public function __construct($display)
     {
         $this->display = $display;
     }
+
     public function onKernelResponse(FilterResponseEvent $event)
     {
         // Si le param display est à off
@@ -33,6 +35,7 @@ class BuildSubscriber implements EventSubscriberInterface
         );
         $response->setContent($content);
     }
+    
     public static function getSubscribedEvents()
     {
         return [
