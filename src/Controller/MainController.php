@@ -39,4 +39,12 @@ class MainController extends Controller
     {
         return $this->render('main/cgu.html.twig');
     }
+
+    /**
+     * @Route("/developers", name="developers")
+     */
+    public function developers()
+    {
+        return $this->render('main/developers.html.twig');
+    }
 }

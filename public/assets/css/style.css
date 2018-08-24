@@ -16,6 +16,9 @@
     height: 50px;
     box-shadow: 5px 5px 5px 5px #AAA;
 }
+.fa-external-link-alt {
+    font-size: 0.75em;
+}
 /* ****** */
 /* NAVBAR */
 header{

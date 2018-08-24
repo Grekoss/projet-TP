@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Qui sommes-nous?{% endblock %}
+
+{% block body %}
+<div class="mt-3">
+    <h1 class="h1 text-center font-weight-bold">Qui sommes-nous?</h1>
+    <p>Nous sommes trois jeunes développeurs sortant tout droit de la promotion HyperSpace du centre de formation <a href="https://oclock.io/" target="_blank">O'clock <span class="badge"></span><i class="fas fa-external-link-alt"></i></span></a>.</p>
+    <p>Prenons l'air est notre projet de fin d'étude en total autonomie.</p>
+</div>
+<div class="mt-3">
+    <h2 class="h2 font-weight-bold">Pourrias Cédric</h2>
+    
+    <div class="d-flex">
+        <img src="{{ asset('assets/images/developers/grekoss.jpg')}}" alt="Photo de Cédric Pourrias">
+        <div class="p-2">
+            <div class="mt-2">
+                <p><span class="font-weight-bold">Date de Naissance : </span>23 Juillet 1985 - 33 ans</p>
+                <p><span class="font-weight-bold">Ville : </span>Chartres en Eure-et-Loir (28)</p>
+            </div>
+            <div class="mt-2">
+                <p><span class="font-weight-bold">Statue professionnel : </span>Actuellement en recherche d'emploi</p>
+                <p><span class="font-weight-bold">Spécialisation : </span>Symfony 4 - Base de donnée</p>
+            </div>
+            <div class="mt-2">
+                <p><span class="font-weight-bold">Descritpion : </span>En pleine reconvertion professionnel, je viens de finir ma formation auprès de O'clock. Je suis en préparation du Titre Professionnel pour valider ma formation, dont ce projet sera présenté au jury. Durant la formation, j'ai réellement eu confirmation que je voulai convertir ma passion en profession et que je ne me suis pas trompé dans mon choix! Si toi, le recruteur tu vois ceci, contact moi pour me montrer ma détermination et de me faire confiance sur le choix de prendre quelqu'un qui n'a pas d'expérience, il faut bien commencer ...</p>
+            </div>
+        </div>
+    </div>
+    <div>
+        <p><span class="font-weight-bold">Mail : </span><a href="mailto:pourriascedric@gmail.com">pourriascedric@gmail.com</a></p>
+        <p><span class="font-weight-bold">Github : </span><a href="https://github.com/Grekoss" target="_blank">Grekoss <span class="badge"></span><i class="fas fa-external-link-alt"></i></span></a>
+        <p><span class="font-weight-bold">Opquast : </span><a href="https://certificates.opquast.com/certificate/D8JSHM/" target="_blank">Mon certificat <span class="badge"></span><i class="fas fa-external-link-alt"></i></span></a>
+        <p><span class="font-weight-bold">CV : </span><a href="{{ asset('assets/other/CV_Cedric_Pourrias.pdf') }}">Format PDF (57,4 ko)</a></p>
+    </div>
+</div>
+{% endblock %}
