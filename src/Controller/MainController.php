@@ -31,4 +31,12 @@ class MainController extends Controller
             'events' => $eventReporting->showForHomepage(),
         ]);
     }
+
+    /**
+     * @Route("/cgu", name="cgu")
+     */
+    public function cgu()
+    {
+        return $this->render('main/cgu.html.twig');
+    }
 }
