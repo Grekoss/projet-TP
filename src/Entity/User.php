@@ -82,7 +82,7 @@ class User implements UserInterface, \Serializable
     private $address;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(type="string", length=10)
      * 
      * @Assert\NotBlank(message = "Saisir votre code postal")
      */

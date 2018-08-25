@@ -36,6 +36,7 @@ class AppFixtures extends Fixture
     private $listTags = array();
     private $listEvents = array();
     private $listLink = array();
+    private $listVisibilities = array();
     private $encoder;
                        
     public function __construct(Slugger $slugger, UserPasswordEncoderInterface $encoder)
@@ -876,8 +877,8 @@ class AppFixtures extends Fixture
         ->setEmail('admin@fakelist.fr')
         ->setPassword($this->encoder->encodePassword($admin,'admin'))
         ->setRole($roleAdmin)
-        ->setCity('Petaouchnok')
-        ->setZipcode('75900')
+        ->setCity($generator->city)
+        ->setZipcode($generator->postcode)
         ->setDepartment($listDepartments[array_rand($listDepartments)])
         ->setBirthDate($generator->dateTime($max = '-18 year'))
         ->setSlug($this->slugger->slugify($admin->getUsername()))
@@ -894,8 +895,8 @@ class AppFixtures extends Fixture
         ->setEmail('modo@fakelist.fr')
         ->setPassword($this->encoder->encodePassword($modo,'modo'))
         ->setRole($roleModerator)
-        ->setCity('Pouilly-sur-Yvette')
-        ->setZipcode('92770')
+        ->setCity($generator->city)
+        ->setZipcode($generator->postcode)
         ->setDepartment($listDepartments[array_rand($listDepartments)])
         ->setBirthDate($generator->dateTime($max = '-18 year'))
         ->setSlug($this->slugger->slugify($modo->getUsername()))
@@ -914,8 +915,8 @@ class AppFixtures extends Fixture
                 ->setEmail($user->getUsername().'@fakelist.fr')
                 ->setPassword($this->encoder->encodePassword($user,'user'))
                 ->setRole($roleUser)
-                ->setCity('Paris')
-                ->setZipcode('75000')
+                ->setCity($generator->city)
+                ->setZipcode($generator->postcode)
                 ->setDepartment($listDepartments[array_rand($listDepartments)])
                 ->setBirthDate($generator->dateTime($max = '-18 year'))
                 ->setSlug($this->slugger->slugify($user->getUsername()))
@@ -936,8 +937,8 @@ class AppFixtures extends Fixture
                 ->setEmail($user->getUsername() . '@fakelist.fr')
                 ->setPassword($this->encoder->encodePassword($user, 'user'))
                 ->setRole($roleUser)
-                ->setCity('Marseille')
-                ->setZipcode('13000')
+                ->setCity($generator->city)
+                ->setZipcode($generator->postcode)
                 ->setDepartment($listDepartments[array_rand($listDepartments)])
                 ->setBirthDate($generator->dateTime($max = '-18 year'))
                 ->setSlug($this->slugger->slugify($user->getUsername()))
@@ -960,9 +961,10 @@ class AppFixtures extends Fixture
             $manager->flush();
             $listTags[] = $tag;
         }
+
         // Création des Visiblités (Tout le monde, Amis, certains amis)
         $titles = ['Tout le monde', 'Amis'];
-        for($i=0; $i<2; $i++){
+        for($i=0; $i<count($titles); $i++){
             $visibility = new Visibility();
             $visibility->setTitle($titles[$i]);
             $manager->persist($visibility);
@@ -972,14 +974,13 @@ class AppFixtures extends Fixture
 
         // Création des Events
         for ($i = 0; $i < 100; $i++){
-            $date= new \DateTime();
             $event = new Event;
             $event
                 ->setName($generator->sentence($nbWords = 6, $variableNbWords = true))
                 ->setZipcode($generator->postcode())
                 ->setCity($generator->city())
-                ->setDateAt($generator->dateTimeBetween($startDate = '1 month', $endDate = '2 month', $timezone = null))
-                ->setTimeAt($date)
+                ->setDateAt($generator->dateTimeBetween($startDate = '+ 1 month', $endDate = '+ 2 years', $timezone = null))
+                ->setTimeAt($generator->dateTime())
                 ->setDescription($generator->paragraph($nbSentences = 6, $variableNbSentences = true))
                 ->setDepartment($listDepartments[array_rand($listDepartments)])
                 ->setOrganize($listUsers[array_rand($listUsers)])
@@ -998,7 +999,7 @@ class AppFixtures extends Fixture
             $listEvents[] = $event;
         }
 
-        //Création de participant aux evenements
+        // Création de participant aux evenements
         foreach($listEvents as $event) {
             shuffle($listUsers);
             $participation = new Participation();
@@ -1007,21 +1008,16 @@ class AppFixtures extends Fixture
                 $manager->persist($participation);
                 $manager->flush();
 
-        //     random pour choisir le nombre de participants à un event
-             $rand = rand(0, $event->getParticipantsLimit());
+            // Random pour choisir le nombre de participants à un event
+            $rand = rand(0, $event->getParticipantsLimit());
             for ($i = 0; $i < $rand ; $i++) {
                 $participation = new Participation();
                 $participation->setEvent($event);
                 $participation->setParticipant($listUsers[$i]);
                 $manager->persist($participation);
-            $manager->flush();
-
-
-                
-                //$event->addParticipant($listUsers[$i]);
+                $manager->flush();
             }
         }
-
         
         // Attribution des Tags pour les Events
         foreach($listEvents as $event) {
@@ -1034,7 +1030,6 @@ class AppFixtures extends Fixture
             }
         }
     
-
         // Création des Rapport sur Events
         for($i = 0; $i < 10; $i++) {
             $eventReporting = new EventReporting;
@@ -1045,14 +1040,12 @@ class AppFixtures extends Fixture
             $manager->flush();                        
         }                                                            
 
-
         // Création des rapport sur les users
         for($i = 0; $i < 10; $i++){
             $userReport = new UserReporting;
-            $userReport
-                ->setDescription($generator->paragraph($nbSentences = 3, $variableNbSentences = true))
-                ->setUser($listUsers[array_rand($listUsers)])
-                ->setAccusedUser($listUsers[array_rand($listUsers)]);
+            $userReport->setDescription($generator->paragraph($nbSentences = 3, $variableNbSentences = true))
+                       ->setUser($listUsers[array_rand($listUsers)])
+                       ->setAccusedUser($listUsers[array_rand($listUsers)]);
             $manager->persist($userReport);
             $manager->flush();
         }
@@ -1060,15 +1053,14 @@ class AppFixtures extends Fixture
         // Création commentaire
         for ($i = 0; $i < 25; $i++){
             $comment = new Comment;
-            $comment
-            ->setDescription($generator->sentence($nbWords = 10, $variableNbWords = true))
-            ->setEvent($listEvents[array_rand($listEvents)])
-            ->setUser($listUsers[array_rand($listUsers)]);
+            $comment->setDescription($generator->sentence($nbWords = 10, $variableNbWords = true))
+                    ->setEvent($listEvents[array_rand($listEvents)])
+                    ->setUser($listUsers[array_rand($listUsers)]);
             $manager->persist($comment);
             $manager->flush();
         }
 
-         // Création des Link (Ami/Liste noire)
+        // Création des Link (Ami/Liste noire)
         $friend = new Link();
         $friend->setName('friend');
         $listLink[] = $friend;
@@ -1079,8 +1071,6 @@ class AppFixtures extends Fixture
         $manager->persist($blackListed);
         $manager->flush();
 
-        
-        
        // Friends/BlacList
         for ($i = 0 ; $i < 50 ; $i++) 
         {
