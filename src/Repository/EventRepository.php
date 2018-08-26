@@ -19,6 +19,7 @@ class EventRepository extends ServiceEntityRepository
 
     private $linkrepo;
     private $vRepo;
+
     public function __construct(RegistryInterface $registry, LinkRepository $linkrepo, VisibilityRepository $vRepo)
     {
         $this->linkrepo = $linkrepo;
@@ -31,13 +32,19 @@ class EventRepository extends ServiceEntityRepository
      */
     public function showForHomepage()
     {
+        $public = $this->vRepo->getPublicVisibility();
+        $now = new \DateTime('-1 second');
+
         return $this->createQueryBuilder('e')
-                    ->orderBy('e.dateAt', 'DESC')
+                    ->orderBy('e.dateAt', 'ASC')
                     ->where('e.isActive = 1')
+                    ->andWhere('e.visibility = :public')
+                    ->andWhere('e.dateAt >= :now')
+                    ->setParameter('public', $public)
+                    ->setParameter('now', $now)
                     ->setMaxResults(4)
                     ->getQuery()
-                    ->getResult()
-        ;
+                    ->getResult();
     }
 
     /**
@@ -46,7 +53,7 @@ class EventRepository extends ServiceEntityRepository
      */
     public function findAllEvents()
     {   
-        $public= $this->vRepo->getPublicVisibility();
+        $public = $this->vRepo->getPublicVisibility();
         $now = new \DateTime('-1 second');
        
         return $this->createQueryBuilder('e')
@@ -58,7 +65,6 @@ class EventRepository extends ServiceEntityRepository
                     ->setParameter('now', $now)
                     ->getQuery()
                     ->getResult();
-                    ;
     }
 
     /**
@@ -132,6 +138,7 @@ class EventRepository extends ServiceEntityRepository
     {
         $date = new \DateTime('-5 day');
         $yesterday= new \DateTime('-1 day');
+
         return $this->createQueryBuilder('e')
                     ->where('e.organize = :theUser')
                     ->andWhere('e.isActive = 1')
@@ -184,12 +191,8 @@ class EventRepository extends ServiceEntityRepository
        ')
         ->setParameter('friend', $friend)
         ->setParameter('user', $user);
-        return $query->getResult();
-        // $query->setFirstResult(($page-1) * $maxperpage)
-        //       ->setMaxResults($maxperpage);
-              
 
-        // return new Paginator($query);
+        return $query->getResult();
     }
     
     /**
@@ -202,8 +205,7 @@ class EventRepository extends ServiceEntityRepository
                     ->andWhere('e.isActive = 1')
                     ->setParameter('department', $department)
                     ->getQuery()
-                    ->getResult()
-                    ;
+                    ->getResult();
     }
 
     /**
@@ -218,8 +220,7 @@ class EventRepository extends ServiceEntityRepository
                     ->andWhere('e.isActive = 1')
                     ->setParameter('region', $region)
                     ->getQuery()
-                    ->getResult()
-                    ;
+                    ->getResult();
     }
 
     /** 
@@ -233,8 +234,7 @@ class EventRepository extends ServiceEntityRepository
                     ->andWhere('e.isActive = 1')
                     ->setParameter('tag', $tag)
                     ->getQuery()
-                    ->getResult()
-                    ;
+                    ->getResult();
     }
 
     /**
@@ -247,8 +247,7 @@ class EventRepository extends ServiceEntityRepository
                     ->andWhere('e.isActive = 1')
                     ->setParameter('search', '%'.$word.'%')
                     ->getQuery()
-                    ->getResult()
-                    ;
+                    ->getResult();
     }
 
     /**
@@ -261,8 +260,7 @@ class EventRepository extends ServiceEntityRepository
             ->where('t.id IN (:tagsSelect)')
             ->setParameter('tagsSelect', $tagsSelect)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
     /**
@@ -279,8 +277,7 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('r.userMain = :user')
             ->setParameter('user', $user)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
     /**
@@ -327,42 +324,4 @@ class EventRepository extends ServiceEntityRepository
 
         return $query->getQuery()->getResult();
     }
-    //only shows  active events the user is allowed to see ( if not blacklisted by organizers)
-    /*public function showForConnectedUser()
-    {
-        return $this->createQueryBuilder('e')
-            ->orderBy('e.dateAt', 'DESC')
-            ->where('e.isActive = 1')
-
-    }*/
-
-
-//    /**
-//     * @return Event[] Returns an array of Event objects
-//     */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Event
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

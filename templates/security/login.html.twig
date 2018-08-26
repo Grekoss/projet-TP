@@ -1,76 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700|Raleway:400,600,700,900" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('assets/css/login.css') }}">
-{% endblock %}
+{% block title %}Connexion{% endblock %}
 
 {% block body %}
+    <div class="text-center d-flex justify-content-center mt-5">
 
         {% if error %}
-            <div class="alert alert-warning" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
-        
-    <div class="limiter">
-        <div class="container-login100">
-            <div class="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30">
-                <form class="login100-form validate-form" action="{{ path('login') }}" method="post">
-                    <span class="login100-form-title p-b-30">
-                        Connexion
-                    </span>
 
-                    <div class="wrap-input100 validate-input m-b-16" data-validate="Valid email is required: ex@abc.xyz">
-                        <input id="username" class="input100" type="text" name="_username" value="{{ last_username }}" placeholder="Votre nom ou mail">
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-                            <span class="lnr lnr-envelope"></span>
-                        </span>
-                    </div>
+        <form class="form-signin w-25 " action="{{ path('login') }}" method="post">
+            <img class="mb-4" src="{{ asset('assets/images/icon.svg') }}" alt="Tête remplie de questions" width="72" height="72">
+            <h2 class="h2 mb-3 font-weight-normal">Connexion</h2>
 
-                    <div class="wrap-input100 validate-input m-b-16" data-validate="Password is required">
-                        <input id="password" class="input100" type="password" name="_password" placeholder="Mot de passe">
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-                            <span class="lnr lnr-lock"></span>
-                        </span>
-                    </div>
+            <label for="username" class="sr-only">Pseudo:</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" placeholder="Votre pseudo ou mail" required="required" autofocus="autofocus"/>
 
-                {#     <div class="contact100-form-checkbox m-l-4">
-                        <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
-                        <label class="label-checkbox100" for="ckb1">
-                            Remember me
-                        </label>
-                    </div> #}
+            <label for="password" class="sr-only">Mot de Passe:</label>
+            <input type="password" id="password" name="_password" class="form-control mb-3" placeholder="Mot de Passe" required="required"/>
 
-                    <div class="container-login100-form-btn p-t-25">
-                        <button class="login100-form-btn">
-                            Connexion
-                        </button>
-                    </div>
-
-                    <div class="text-center w-full p-t-42 p-b-22">
-                        <span class="txt1">
-                            Ou connectez-vous via :
-                        </span>
-                    </div>
-
-                    <a href="#" class="btn-face m-l-r-auto">
-                        <i class="fab fa-facebook-square"></i>
-                        Facebook
-                    </a>
-
-                    <div class="text-center w-full p-t-115">
-                        <span class="txt1">
-                            Pas encore membre?
-                        </span>
-
-                        <a class="txt1 bo1 hov1" href="{{ path('user_new') }}">
-                            Inscris-toi!
-                        </a>
-                    </div>
-                </form>
+            <div class="my-3">
+                <input id="ckb1" type="checkbox" name="_remember_me">
+                <label for="ckb1">Se souvenir de moi</label>
             </div>
-        </div>
+
+            <button type="submit" class="btn btn-lg btn-primary btn-block">Se connecter</button>
+        </form>
+    </div>
+
+    <div class="text-center w-full pt-5">
+        <span>Pas encore membre ?</span>
+        <a href="{{ path('user_new') }}">Inscris-toi!</a>
+    </div>
+{% endblock %}
+
+{# <div class="text-center w-full p-t-42 p-b-22">
+    <span class="txt1">
+        Ou connectez-vous via :
+    </span>
 </div>
 
-{% endblock %}
+<a href="#" class="btn-face m-l-r-auto">
+    <i class="fab fa-facebook-square"></i>
+    Facebook
+</a>
+ #}

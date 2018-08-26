@@ -1,11 +1,5 @@
-{% block title %}Inscription{% endblock %}
+<h3>Félicitation {{ username }}</h3>
 
-{% block body %}
-    Bienvenue.
-    <br>
-    Féliciation
-    <br>
-    Vous venez de vous inscrire sur le site "Prenons l'air"
-    <br>
-    Bonne visite
-{% endblock %}
+<p>Vous venez de vous inscrire sur le site "Prenons l'air"</p>
+
+<p>Pour vous connecter : <a href="{{ url('login') }}">cliquez-ici</a>. Merci!</p>

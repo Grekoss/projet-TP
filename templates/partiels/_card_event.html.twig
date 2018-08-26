@@ -31,7 +31,7 @@
         {% endif %}
         </div>    
 
-        <a class="d-block mb-1 mt-1 text-dark text-justify px-2" href="{{ path('event_show', {'slug':event.slug}) }}">{{ event.description|truncate(200) }}</a>
+        <a class="d-block mb-1 mt-1 text-dark px-2" href="{{ path('event_show', {'slug':event.slug}) }}">{{ event.description|truncate(200) }}</a>
     </div>
 
     {% set freePlaces = event.participantsLimit - event.participations|length %}

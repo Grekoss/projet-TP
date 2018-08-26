@@ -98,10 +98,12 @@ class UserController extends Controller
                 // Send Mail if the new user check (isMailing)
                 if( $user->getIsMailing() == true) {
                     $sendMail->mail(
-                        'Inscription',
+                        'Inscription sur le site "Prenons l\'air"',
                         'dev.prenonslair@gmail.com',
                         $user->getEmail(),
-                        $this->render('user/new_mail.html.twig')
+                        $this->renderView('user/new_mail.html.twig', [
+                            'username' => $user->getUsername(),
+                        ])
                     );
                 }
 
