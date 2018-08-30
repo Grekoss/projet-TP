@@ -33,7 +33,8 @@ class EventRepository extends ServiceEntityRepository
     public function showForHomepage()
     {
         $public = $this->vRepo->getPublicVisibility();
-        $now = new \DateTime('-1 second');
+        $date = new \DateTime;
+        $now = date_format($date, 'Y-m-d');
 
         return $this->createQueryBuilder('e')
                     ->orderBy('e.dateAt', 'ASC')
@@ -54,7 +55,8 @@ class EventRepository extends ServiceEntityRepository
     public function findAllEvents()
     {   
         $public = $this->vRepo->getPublicVisibility();
-        $now = new \DateTime('-1 second');
+        $date = new \DateTime;
+        $now = date_format($date, 'Y-m-d');
        
         return $this->createQueryBuilder('e')
                     ->orderBy('e.dateAt', 'ASC')
@@ -76,7 +78,8 @@ class EventRepository extends ServiceEntityRepository
         $public = $this->vRepo->getPublicVisibility();
         $friend =$this->linkrepo->getFriendLink();
         $private = $this->vRepo->getPrivateVisibility();
-        $now = new \DateTime('-1 sec');
+        $date = new \DateTime;
+        $now = date_format($date, 'Y-m-d');
       
         return $this->createQueryBuilder('e')
                     ->leftJoin('e.organize', 'o')
