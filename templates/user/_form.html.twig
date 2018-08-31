@@ -1,4 +1,77 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{form_start(form) }}
+<div class="my-1">
+    <fieldset class="border border-light p-1 px-3">
+        <legend class="h4">Détail du compte</legend>
+        <div class="d-flex">
+            <div class="w-50 p-1">
+                {{ form_row(form.username) }}
+                {{form_row(form.email)}}
+            </div>
+            <div class="w-50 p-1">
+                {{ form_row(form.password) }}
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+<div class="d-flex">
+    <div class="w-50 mr-1">
+        <fieldset class="border border-light p-1 px-3 my-1">
+            <legend class="h4">Détail personnels</legend>
+            <div>
+                {{form_row(form.lastname)}}
+                {{form_row(form.firstname)}}
+                {{form_row(form.address)}}
+                <div class="d-flex">
+                    <div class="w-25">
+                        {{form_row(form.zipcode)}}
+                    </div>
+                    <div class="w-75 ml-1">
+                        {{form_row(form.city)}}
+                    </div>
+                </div>
+                {{form_row(form.department)}}
+            </div>
+        </fieldset>
+
+        <fieldset class="border border-light p-1 px-3 my-1">
+            <legend class="h4">Conditions et envoi</legend>
+            <div class="conditions">
+                <a href="TODO">Voir les conditions</a>
+            </div>
+            <div class="agreement">
+                {{form_row(form.validConditions)}}
+            </div>
+            <div class="agreement">
+                {{form_row(form.isMailing)}}
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="w-50 ml-1">
+        <fieldset class="border border-light p-1 px-3 my-1">
+            <legend class="h4">Information supplémentaires</legend>
+            <div class="d-flex justify-content-around">
+                <div>
+                    {{form_row(form.genre)}}
+                </div>
+                <div>
+                    {{form_row(form.birthDate)}}
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="border border-light p-1 px-3 my-1">
+            <legend class="h4">Bonus</legend>
+            <div>
+                {{form_row(form.avatar)}}
+            </div>
+            <div id="avatar-look" class="mb-1"></div>
+        </fieldset>
+
+        <div class="text-center">
+            <button class="button">Valider &raquo;</button>
+        </div>
+    </div>
+</div>
 {{ form_end(form) }}

@@ -171,7 +171,6 @@ class UserController extends Controller
      */
     public function showNotifs(User $user)   //display current user's notifications list
     {
-        $this->denyAccessUnlessGranted('RIGHTUSER', $user, 'Vous n\'avez pas accès à cette page!');
         $notifications =  $user->getNotifications();
 
         return $this->render('notification/index.html.twig', [
@@ -185,7 +184,6 @@ class UserController extends Controller
      */
     public function edit(Request $request, User $user, UserPasswordEncoderInterface $encoder, FileUploaderUser $fileUploaderUser, Slugger $slugger): Response
     {   
-        $this->denyAccessUnlessGranted('RIGHTUSER', $user, 'Vous n\'avez pas accès à cette page!');
         //We store the current password
         $currentPassword = $user->getPassword();
         //and we done empty
@@ -199,7 +197,7 @@ class UserController extends Controller
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             
             if (empty($user->getPassword())) {
                 // if empty then the user no change the password
@@ -223,17 +221,14 @@ class UserController extends Controller
                     $user->setAvatar($fileName);
                 }
             }
+    
+            $user->setSlug($slugger->slugify($user->getUsername()));
+            
+            $this->getDoctrine()->getManager()->flush();
+            
+            $this->addFlash('success', 'Les modifications sont bien enregistrées!');
 
-            if ($form->isValid()) {
-                
-                $user->setSlug($slugger->slugify($user->getUsername()));
-                
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
-                
-                return $this->redirectToRoute('homepage');
-            }
+       //     return $this->redirectToRoute('homepage');    
         }
 
         return $this->render('user/edit.html.twig', [
@@ -247,7 +242,6 @@ class UserController extends Controller
      */
     public function delete(Request $request, User $user): Response
     {
-        $this->denyAccessUnlessGranted('RIGHTUSER', $user, 'Vous n\'avez pas accès à cette page!');
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
@@ -386,7 +380,6 @@ class UserController extends Controller
 
     public function showFollowedEvents(User $user, FollowingRepository $repo)
     {   
-        $this->denyAccessUnlessGranted('RIGHTUSER', $user, 'Vous n\'avez pas accès à cette page!');
         $events= $repo->getFollowedEvents($user);
         return $this->render('user/followed.html.twig', [
             'user'=> $user,

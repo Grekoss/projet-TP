@@ -9,12 +9,13 @@ use Doctrine\ORM\Events;
 use Symfony\Component\Security\Core\User\UserInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 /**
  * @ORM\Table(name="app_user")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  *  
  */
-class User implements UserInterface, \Serializable 
+class User implements UserInterface, EquatableInterface, \Serializable
 {
     /**
      * @ORM\Id()
@@ -47,10 +48,7 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * 
-     * @Assert\Image(
-     *      allowLandscape = false,
-     *      sizeNotDetectedMessage  = "L'image doit être orienté Portrait"
-     * )
+     * @Assert\Image()
      */
     private $avatar;
 
@@ -71,7 +69,6 @@ class User implements UserInterface, \Serializable
      *      minMessage = "Désoler, vous ne trouverez pas votre bonheur. Nous vous invitons à nous contacter",
      *      maxMessage = "Désoler, les membres doivent être majeurs!"
      * )
-
      */
     private $birthDate;
 
@@ -125,8 +122,6 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=64)
-     * 
-     * @Assert\NotBlank (message = "Merci de saisir un mot de passe")
      */
     private $password;
 
@@ -439,10 +434,6 @@ class User implements UserInterface, \Serializable
 
         return $this;
     }
-
-    
-
-    
 
     /**
      * @return Collection|Event[]
@@ -866,5 +857,21 @@ class User implements UserInterface, \Serializable
         }
 
         return $this;
+    }
+
+    /**
+     * Returns whether the current user is up-to-date or requires re-authentication.
+     */
+    public function isEqualTo(UserInterface $user) : bool
+    {
+        if (!$user instanceof self) {
+            return false;
+        }
+
+        if ($this->getId() !== $user->getId()) {
+            return false;
+        }
+
+        return true;
     }
 }

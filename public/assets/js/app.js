@@ -3,7 +3,6 @@ var app= {
         console.log('Test avec le fichier JS');
 
         $('.js-remove-friend').on('click',$(this), app.confirmRemove);
-        //$('.presence').on('click',$(this), app.showBehavior);
         $('#orgForm').on('submit',$(this), app.confirmSubmit);
 
     },
@@ -17,13 +16,6 @@ var app= {
         var result = window.confirm('Voulez-vous vraiment envoyer cette réponse?');
         return result;
     },
-
-    /*showBehavior: function() {
-        if($('.presence').val() === 5) {
-            $('.behavior').show();
-        }
-    }*/
-
 }
 
 document.addEventListener('DOMContentLoaded', app.init);

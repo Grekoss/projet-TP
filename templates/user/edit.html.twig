@@ -16,81 +16,12 @@
         {% endfor %}
     {% endfor %}
 
-    {{form_start(form) }}
-
-    <h1>Modification de profil</h1>
-
-    <div class="container">
-        <fieldset class="row1">
-            <legend>Détail du compte</legend>
-            <div>
-                {{ form_row(form.username) }}
-                {{form_row(form.email)}}
-            </div>
-            <div class="container-password">
-                {{ form_row(form.password) }}
-            </div>
-            {# <label id="obinfo">* champs obligatoires</label> #}
-        </fieldset>
-
-        <fieldset class="row2">
-            <legend>Détails personnels</legend>
-            <div>
-                {{form_row(form.lastname)}}
-            </div>
-            <div>
-                {{form_row(form.firstname)}}
-            </div>
-            <div>
-                {{form_row(form.address)}}
-            </div>
-            <div>
-                {{form_row(form.zipcode)}}
-            </div>
-            <div>
-                {{form_row(form.city)}}
-            </div>
-            <div>
-                {{form_row(form.department)}}
-            </div>
-        </fieldset>
-
-        <fieldset class="row3">
-            <legend>Informations supplémentaires</legend>
-            <div class="radio-genre">
-                {{form_row(form.genre)}}
-            </div>
-            <div class="birthDate">
-                {{form_row(form.birthDate)}}
-            </div>
-        </fieldset>
-
-        <fieldset class="row4">
-            <legend>Bonus</legend>
-            <div>
-                {{form_row(form.avatar)}}
-            </div>
-            <div id="avatar-look"></div>
-        </fieldset>
-
-        <fieldset class="row5">
-            <legend>Envoi</legend>
-            <div class="agreement d-none">
-                {{form_row(form.validConditions)}}
-            </div>
-            <div class="conditions">
-                <a href="TODO">Voir les conditionss</a>
-            </div>
-            <div class="agreement">
-                {{form_row(form.isMailing)}}
-            </div>
-        </fieldset>
-
-        <button class="button">Modifier &raquo;</button>
-    
+    <div class="d-flex justify-content-center my-2">
+        <img src="{{ asset('assets/images/registration/h1.png') }}">
+        <h1 class="h1">Modification</h1>
     </div>
 
-    {{ form_end(form) }}
+    {{ include('user/_form.html.twig', {'button_label' : 'Mettre à jour'}) }}
 
 {% endblock %}
 
@@ -146,22 +77,3 @@
         }, false);
     </script>
 {% endblock %}
-
-
-
-
-
-
-{# {% extends 'base.html.twig' %}
-
-{% block title %}Edit User{% endblock %}
-
-{% block body %}
-    <h1>Edit User</h1>
-
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('user_index') }}">back to list</a>
-
-    {{ include('user/_delete_form.html.twig') }}
-{% endblock %} #}
