@@ -107,6 +107,8 @@ class UserController extends Controller
                     );
                 }
 
+                $this->addFlash('success', 'Inscription réussite, vous pouvez vous connecter!');
+
                 return $this->redirectToRoute('login');
             }
             else {
@@ -291,9 +293,9 @@ class UserController extends Controller
         $em->remove($relationship);
         $em->flush();
         
-        $this->addFlash('warning', 'Cette personne été retirée de votre liste');
+        $this->addFlash('warning', 'Cette personne été retirée de votre liste noire');
 
-        return $this->redirectToRoute('user_friends', ['id' => $this->getUser()->getId()]);
+        return $this->redirectToRoute('user_show', ['slug' => $userConcerned->getSlug()]);
     }
 
      /**
