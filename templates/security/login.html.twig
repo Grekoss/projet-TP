@@ -11,12 +11,11 @@
         {% endfor %}
     {% endfor %}
     
+    {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
     <div class="text-center d-flex justify-content-center mt-5">
-
-        {% if error %}
-            <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-
 
         <form class="form-signin w-25 " action="{{ path('login') }}" method="post">
             <img class="mb-4" src="{{ asset('assets/images/icon.svg') }}" alt="Tête remplie de questions" width="72" height="72">

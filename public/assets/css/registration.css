@@ -8,15 +8,16 @@
     box-shadow: 3px 3px 5px #AAA;
     border-radius: 100%;
 }
+
 #user_avatar {
     opacity: 1;
     width: 100%;
     height: auto;
     font-size: inherit;
 }
+
 .button
 {
-    background: #abda0f url(../images/registration/overlay.png) repeat-x;
     padding: 8px 10px 8px;
     color: #fff;
     text-decoration: none;
@@ -26,4 +27,14 @@
     cursor: pointer;
     font-size:18px;
     margin:10px auto;
+}
+
+.valid
+{
+    background: #abda0f url(../images/registration/overlay.png) repeat-x;
+}
+
+.cancel
+{
+    background: #da270f url(../images/registration/overlay.png) repeat-x;
 }
