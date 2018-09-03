@@ -43,8 +43,6 @@ class EventController extends Controller
     private $sendMail;
     private $partRepo;
     
-       
-
     public function __construct (RelationShipRepository $relRepo, UserRepository $userRepo, SendMail $sendMail, ParticipationRepository $partRepo)
     {
         $this->relRepo = $relRepo;
@@ -53,7 +51,6 @@ class EventController extends Controller
         $this->partRepo= $partRepo;
         
     }
-
     
     /**
      * @Route("/list/", name="event_list", methods="GET")
@@ -169,23 +166,18 @@ class EventController extends Controller
                         }                        
                     } 
                 }
-                
                 $em->persist($event);
                 $em->persist($participation);
                 $em->flush();
                 
-                
-                
-                
                 return $this->redirectToRoute('event_list');
+
             } else  {
                 $this->addFlash ('danger', 'Erreur! Vous ne pouvez pas mettre une date limité dans le passé!');
             }
         }
-        
     }
   
-
         return $this->render('event/new.html.twig', [
             'event' => $event,
             'form' => $form->createView(),
@@ -250,8 +242,6 @@ class EventController extends Controller
         }
     }
         
-    
-
     /**
      * @Route("/{slug}/update", name="event_update", methods="GET|POST")
      */
@@ -402,30 +392,25 @@ class EventController extends Controller
         }
     }
 
-
     private function isTimedOut(Event $event) {
 
         $date = new \DateTime();
         $time= date_parse($event->getTimeAt()->format('Y-m-d H:i:s'));
         $dateTime = $event->getDateAt()->setTime($time['hour'],$time['minute']);
         
-        
         if ($dateTime < $date) {
-
             return true;
         }  
-    
-    
     }
-        private function cantJoin(Event $event) {
-
-            $time= new \DateTime();;
-            if ($event->getJoinTimeLimit() > $time) {
-                return true;
-            }
-    }
-
     
+    private function cantJoin(Event $event) {
+
+        $time= new \DateTime();
+
+        if ($event->getJoinTimeLimit() > $time) {
+            return true;
+        }
+    }
 
     /**
      * @Route("/{slug}/rating", name="event_rating", methods = "GET")
@@ -440,20 +425,19 @@ class EventController extends Controller
 
         if ($this->getUser() == $event->getOrganize()) {
             $this->denyAccessUnlessGranted('ORGANIZER', $participation, 'Vous avez déjà noté cet évènement!');
+
             return $this->render('rating/_organizer.html.twig', [
                 'participants' => $participants,
                 'slug' => $slug,
-               
            ]);
         } else {
             $this->denyAccessUnlessGranted('PARTICIPANT', $participation, 'Vous n\'avez pas accès à cette page!');
+
             return $this->render('rating/_user.html.twig', [
                 'participants' => $participants,
                 'slug' => $slug,
                 ]);
         }
-       
-        
     }
 
     /**
@@ -462,68 +446,66 @@ class EventController extends Controller
 
      public function organizerRating(Event $event, Request $request, ParticipationRepository $repo)
      {
-            $participants =$repo->getParticipants($event);
-                //The organizer rates his own presence  but can't rate his own behaviour and the mark is neither added in the number of evaluation nor in its rating
-                $orgParticipation = $repo->findOneParticipation($event, $participants[0]);
+        $participants =$repo->getParticipants($event);
+        //The organizer rates his own presence  but can't rate his own behaviour and the mark is neither added in the number of evaluation nor in its rating
+        $orgParticipation = $repo->findOneParticipation($event, $participants[0]);
 
-            $presenceOrga =$request->request->get('presence'.'0');
-            if  ($presenceOrga == 5) {
-                
-                $orgParticipation->setIsReal(true);
+        $presenceOrga =$request->request->get('presence'.'0');
+        if  ($presenceOrga == 5) {
             
-            
-
-                for($i=1; $i< count($participants); $i ++){
-                    $presence = $request->request->get('presence'.$i);
+            $orgParticipation->setIsReal(true);
+        
+            for($i=1; $i< count($participants); $i ++){
+                $presence = $request->request->get('presence'.$i);
                 $behavior= $request->request->get('comportement'.$i);
-                    if  ($presence == 5){
-                        ($participants[$i]);
-                        $mark = ($presence +$behavior+$participants[$i]->getRating())/3;
 
-                        $participants[$i]->setRating($mark);
-                        $participants[$i]->setEvalCount($participants[$i]->getEvalCount()+1);
-                            
-                        //Get the partipant's participation and indicates that the person was really present, that allow him to rate others participants
-                        $participation = $repo->findOneParticipation($event, $participants[$i]);
-                        $participation->setIsReal(true);
-                        //A notification is sent to real participants to inivite them to rate each other
-                        $notification = new Notification();
-                        $notification->setTitle('Vous avez une évaluation à faire :'.$event->getName());
+                if  ($presence == 5){
+                    ($participants[$i]);
+                    $mark = ($presence +$behavior+$participants[$i]->getRating())/3;
+
+                    $participants[$i]->setRating($mark);
+                    $participants[$i]->setEvalCount($participants[$i]->getEvalCount()+1);
                         
-                        $temp = '<p>Pour que le site reste un espace agréable, veuillez évaluer les autres participants de la sortie  en allant sur ce lien:</p>';
-                        $temp .= '<a href="/event/'.$event->getSlug().'/rating ">évaluation</a>';
+                    //Get the partipant's participation and indicates that the person was really present, that allow him to rate others participants
+                    $participation = $repo->findOneParticipation($event, $participants[$i]);
+                    $participation->setIsReal(true);
+                    //A notification is sent to real participants to inivite them to rate each other
+                    $notification = new Notification();
+                    $notification->setTitle('Vous avez une évaluation à faire :'.$event->getName());
                     
-                        $notification->setBody(($temp));
-                        $notification->setSendee($participants[$i]);
+                    $temp = '<p>Pour que le site reste un espace agréable, veuillez évaluer les autres participants de la sortie  en allant sur ce lien:</p>';
+                    $temp .= '<a href="/event/'.$event->getSlug().'/rating ">évaluation</a>';
+                
+                    $notification->setBody(($temp));
+                    $notification->setSendee($participants[$i]);
 
-                        $em = $this->getDoctrine()->getManager();
-                        $em->persist($notification);
-                        $em->flush();
-
-                        if ($participants[$i]->getIsMailing()){
-                            $subject=  'Prenons l\'air - '.$notification->getTitle();
-                            $admin = 'dev.prenonslair@gmail.com';
-                            $member = $participants[$i]->getEmail();
-                            $message = 'Bonjour, <br><br>'.$notification->getBody().'<br> <br> Cordialement, l\'équipe de Prenons l\'air.';
-                            $this->sendMail->mail($subject,$admin,$member,$message);
-                            }
-
-                    } else {
-                        $mark = ($presence +$participants[$i]->getRating())/2;
-                        $participants[$i]->setRating($mark);
-                        $participants[$i]->setEvalCount($participants[$i]->getEvalCount()+1);
-                        $em = $this->getDoctrine()->getManager();
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($notification);
                     $em->flush();
-                    }
-                }
-            } 
-            //indicates the organizer has rated and then can no longer do it
-            $orgParticipation->setHasRated(true);
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-                        
 
-            return $this->redirectToRoute('event_show', ['slug' => $event->getSlug()]); 
+                    if ($participants[$i]->getIsMailing()){
+                        $subject=  'Prenons l\'air - '.$notification->getTitle();
+                        $admin = 'dev.prenonslair@gmail.com';
+                        $member = $participants[$i]->getEmail();
+                        $message = 'Bonjour, <br><br>'.$notification->getBody().'<br> <br> Cordialement, l\'équipe de Prenons l\'air.';
+                        $this->sendMail->mail($subject,$admin,$member,$message);
+                        }
+
+                } else {
+                    $mark = ($presence +$participants[$i]->getRating())/2;
+                    $participants[$i]->setRating($mark);
+                    $participants[$i]->setEvalCount($participants[$i]->getEvalCount()+1);
+                    $em = $this->getDoctrine()->getManager();
+                $em->flush();
+                }
+            }
+        } 
+        //indicates the organizer has rated and then can no longer do it
+        $orgParticipation->setHasRated(true);
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+                    
+        return $this->redirectToRoute('event_show', ['slug' => $event->getSlug()]); 
      }
    
 
@@ -534,6 +516,7 @@ class EventController extends Controller
     {
         $participants =$repo->getParticipants($event);
         dump($request);
+
         for($i=0; $i< count($participants)-1; $i ++)
         {
             $behavior= $request->request->get('comportement'.$i);
@@ -545,6 +528,7 @@ class EventController extends Controller
                 $em->flush();
             }
         }
+
         $participation = $repo->findOneParticipation($event, $this->getUser());
         $participation->setHasRated(true);
         $em = $this->getDoctrine()->getManager();
@@ -552,9 +536,7 @@ class EventController extends Controller
         $this->addFlash('success', 'Votre notation a bien été prise en compte');
 
         return $this->redirectToRoute('event_show', ['slug' => $event->getSlug()]); 
-
     }
-
 
     /**
      * @Route("/{slug}/follow", name="event_follow")
@@ -571,10 +553,8 @@ class EventController extends Controller
             $em->flush();
         }
         
-        
         return $this->redirectToRoute('event_show', [
             'slug' => $event->getSlug(),
-            
             ]); 
     }
 }

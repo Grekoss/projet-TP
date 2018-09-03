@@ -127,10 +127,10 @@
                         {% if cantJoin %}
                             <div class="text-center my-2">
                                 {% if app.user in participants %}
-                                    <a class="btn btn-warning show-event-button-registration" href="{{ path('event_unjoin', {'slug': event.slug}) }}" role="button">Se désinscrire</a>
+                                    <a class="btn btn-warning" href="{{ path('event_unjoin', {'slug': event.slug}) }}" role="button">Se désinscrire</a>
                                 {% else %}
-                                    <a class="btn btn-success show-event-button-registration" href="{{ path('event_join', {'slug': event.slug}) }}">S'inscrire à l'évènement</a>
-                                {% endif %}  
+                                    <a class="btn btn-success" href="{{ path('event_join', {'slug': event.slug}) }}">S'inscrire à l'évènement</a>
+                                {% endif %} 
                             </div>
                         {% endif %}
                     {% endif %}
@@ -140,6 +140,9 @@
                         <div class="text-center"><a class="btn btn-secondary show-event-finish" href="{{ path('event_rating', {'slug': event.slug}) }}">Veuillez noter les participants</a></div>
                     {% endif %}
                 {% endif %}
+                <div class="text-center my-2">
+                    <a class="btn btn-warning" href="{{ path('event_reporting_new', {'slug': event.slug}) }}"><i class="fas fa-exclamation-triangle mr-2"></i>Signaler l'évènement</a> 
+                </div>
             {% endif %}       
         </div>
         <div class="card-footer text-center">

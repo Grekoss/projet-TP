@@ -99,6 +99,7 @@
                 {% else %}
                     <div><a class="btn btn-warning w-100 my-1" href="{{ path('remove_friend', {'id':user.id}) }}" class="js-remove-friend">Retirer de votre liste noire</a></div>
                 {% endif %}
+                <div><a class="btn btn-warning w-100 my-1 mt-3" href="{{ path('user_reporting_new', {'slug': user.slug}) }}"><i class="fas fa-exclamation-triangle mr-2"></i>Signaler le membre</a></div>
             {% endif %}        
         </div>
     </div>
