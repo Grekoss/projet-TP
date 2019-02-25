@@ -29,32 +29,15 @@ class UserReportingRepository extends ServiceEntityRepository
         ;
     }
 
-//    /**
-//     * @return UserReporting[] Returns an array of UserReporting objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return userReporting[] Returns an array of UserReporting Object for the all user reporting no manage
+     */
+    public function adminAllUsersReporting()
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderby('u.dateAt', 'DESC')
+            ->where('u.isManage = 0')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?UserReporting
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

@@ -28,32 +28,16 @@ class EventReportingRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
-//    /**
-//     * @return EventReporting[] Returns an array of EventReporting objects
-//     */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?EventReporting
+    /**
+     * @return eventReporting[] Returns an array of EventReporting Object for the all events reporting no manage
+     */
+    public function adminAllEventsReporting()
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
+            ->orderby('e.dateAt', 'DESC')
+            ->where('e.isManage = 0')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult();
     }
-    */
 }

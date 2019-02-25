@@ -327,4 +327,16 @@ class EventRepository extends ServiceEntityRepository
 
         return $query->getQuery()->getResult();
     }
+
+    /**
+     * @return event[] Returns an array of Event Object for the 10 last all events update
+     */
+    public function adminLastEvents()
+    {
+        return $this->createQueryBuilder('e')
+            ->orderby('e.updatedAt', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
 }

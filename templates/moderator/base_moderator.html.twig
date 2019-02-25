@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="d-flex justify-content-between">
+	<div class="w-20 left position-fixed">
+		{% include 'moderator/partiels/_nav_secondary.html.twig' %}
+	</div>
+	<div class="w-75 right position-fixed">
+		{% block moderator %}{% endblock %}	
+	</div>
+</div>
+{% endblock %}

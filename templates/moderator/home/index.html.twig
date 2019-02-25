@@ -1,9 +1,40 @@
-{% extends 'moderator/base.html.twig' %}
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('assets/css/moderator/style_home.css') }}">
-{% endblock %}
-{% block title %}Moderator Home{% endblock %}
+{% extends 'moderator/base_moderator.html.twig' %}
 
-{% block body %}
-	<h1>Bienvenue Modérateur!</h1>
+{# {% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/css/moderator/style_home.css') }}">
+{% endblock %} #}
+
+{% block title %}Menu des administrateurs{% endblock %}
+
+{% block moderator %}
+<h1>Informations des administrateurs</h1>
+
+<div>
+	<ol>
+		{% for event in events %}
+			<li>{{ event.name }} ( {{ event.department }} )</li> {# TODO => Faire un lien #}
+		{% endfor %}
+	</ol>
+
+	<ol>
+		{% for user in users %}
+			<li>{{ user.username }} - {{ user.firstname|capitalize }} {{ user.lastname|capitalize }}</li>
+		{% endfor %}
+	</lo>
+</div>
+
+<div>
+	<ol>
+		{% for eventReporting in eventsReporting %}
+			<li>{{ eventReporting.event }}</li>
+		{% endfor %}
+	</ol>
+
+	<ol>
+		{% for userReporting in usersReporting %}
+			<li>{{ userReporting.accusedUser }}
+		{% endfor %}
+	</ol>
+	<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore ad consequatur sint, quae nisi eius nulla! Beatae, enim veniam. Fugit facilis, amet obcaecati eum consequuntur sequi odit neque excepturi accusantium cupiditate animi, facere dolorum exercitationem aut, doloribus error. Placeat unde optio animi corrupti ad nesciunt quod libero repudiandae, sint accusamus rerum fugiat maiores aliquam quaerat quidem similique omnis vel tempora illo quae qui ipsam perspiciatis, molestias porro! Voluptatibus quidem laboriosam dolor labore enim. Ipsam, accusamus. Quas earum deserunt quos expedita assumenda possimus ut obcaecati quibusdam perferendis reiciendis vitae non nam tempore, sapiente voluptatem voluptates? Distinctio non vitae alias. Obcaecati quae totam error eveniet commodi sequi aliquid, qui voluptate cumque minus sed nobis, nulla expedita quod magni blanditiis hic amet fugit voluptatibus eum. Cumque placeat labore deleniti eaque voluptates tempora temporibus asperiores neque autem? Enim maiores magnam id in tempore ipsa perspiciatis ipsum harum similique vero officia commodi officiis, doloribus fugit recusandae placeat dolorum itaque incidunt dicta! Pariatur aut accusantium, maiores voluptatem quae deleniti quo. Beatae quibusdam perspiciatis culpa, officiis ea accusamus veniam tempora nemo temporibus dolor fugiat a, rem iure rerum minima ullam dignissimos ipsam, itaque aspernatur unde autem similique quidem. Dignissimos corporis in culpa dolores consequuntur doloribus adipisci. Exercitationem voluptas, voluptate, adipisci aspernatur sapiente esse vel ad praesentium ipsam quibusdam dolorem! Repudiandae, illum quidem! Ea et aperiam quod tempore rerum temporibus vitae corporis quas minus a quae cupiditate eos ad, esse, sed enim maxime voluptatum nisi recusandae pariatur consequuntur perspiciatis dignissimos explicabo numquam. Nemo repellat suscipit voluptatibus, asperiores obcaecati laboriosam qui tempore, nam hic repellendus eveniet nesciunt consequatur ad quod. Dolor quia fuga minus, enim est rerum corporis. Optio, illo tempora maxime molestias dolorem, similique dicta id sapiente deserunt, iure beatae ullam quae ad vel tenetur at veritatis ea nulla saepe sed hic aliquid ex. Architecto sit inventore debitis nisi. Et perspiciatis officiis dolores eligendi eveniet voluptatem officia doloremque dignissimos? Suscipit obcaecati quaerat corrupti minus assumenda, minima dignissimos voluptates voluptatibus, pariatur sequi quae, accusamus eius iste voluptate illo a. Unde quisquam ea minus ratione nobis natus molestias modi explicabo placeat, quia, pariatur, asperiores ullam rerum possimus reprehenderit consequuntur cum veritatis? Soluta, eaque? Tempore dolore repellendus blanditiis? Culpa minima saepe quod ducimus delectus unde. Ullam nihil voluptatibus labore accusantium quibusdam maiores vitae veniam ea expedita iste! Est, nesciunt animi voluptatum officia necessitatibus aspernatur voluptate cum. Sit perspiciatis nesciunt repellat impedit dolor repudiandae suscipit praesentium esse neque. Quidem, asperiores suscipit. Ratione temporibus eius aspernatur eveniet veritatis quia alias rem. Dicta totam eius vel quaerat nulla laborum eveniet, iure dolores nam quibusdam reiciendis iusto accusantium, repellendus voluptate error tenetur, possimus cum! Facere magnam dolores asperiores neque alias sed explicabo harum? Inventore, voluptatum eveniet quisquam deserunt quaerat, nesciunt magnam veritatis blanditiis unde veniam delectus expedita dicta molestiae quasi mollitia ipsam fugiat minima. Illo alias nam possimus suscipit eligendi ab corrupti modi error nobis officiis. Et, accusantium alias minima quidem, molestias iusto nam quasi quis corrupti obcaecati nesciunt, placeat dolores mollitia qui sequi amet voluptates autem quisquam rerum pariatur! Suscipit delectus dolore harum necessitatibus!</p>
+	<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Assumenda ut obcaecati veritatis eaque. Ut asperiores, ad vel nam doloribus perferendis vitae, veritatis hic quisquam porro adipisci nesciunt. Suscipit, esse facere.</p>
 {% endblock %}

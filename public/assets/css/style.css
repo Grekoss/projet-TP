@@ -10,6 +10,8 @@
 /* SIZE */
 .width-50-xl-25 { width: 50% }
 .width-100-md-25 { width: 100% }
+.w-20 { width: 20% }
+
 /* GENERAL */
 #button-france {
     cursor: pointer;
@@ -19,6 +21,15 @@
 .fa-external-link-alt {
     font-size: 0.75em;
 }
+
+/* POSITION */
+.left {
+    left: 0;
+}
+.right {
+    right: 0;
+}
+
 /* ****** */
 /* NAVBAR */
 header{
